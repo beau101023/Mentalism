@@ -1,7 +1,6 @@
 package me.beaubaer.mentalism.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.beaubaer.mentalism.attributes.MentalismAttributes;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -29,9 +28,7 @@ public class MeditationScreen extends Screen
 
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
 
-        String str = String.valueOf(minecraft.player.getAttribute(MentalismAttributes.FOCUS).getValue());
-
-        this.font.draw(pPoseStack, str, 0.25F, 0.25F, 0xffffffff);
+        this.font.draw(pPoseStack, "Placeholder", 0.25F, 0.25F, 0xffffffff);
     }
 
     @Override

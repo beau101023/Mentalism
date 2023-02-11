@@ -1,7 +1,6 @@
 package me.beaubaer.mentalism;
 
 import com.mojang.logging.LogUtils;
-import me.beaubaer.mentalism.attributes.MentalismAttributes;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -18,8 +17,6 @@ public class Mentalism
     {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-
-        MentalismAttributes.registerAttributes();
     }
 
     private void setup(final FMLCommonSetupEvent event)
