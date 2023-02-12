@@ -4,7 +4,7 @@ public interface IFocusModifier
 {
     boolean afterFocusLevel = false;
 
-    FocusCapability parent = null;
+    Focus parent = null;
 
     public abstract float apply(float initialValue);
 

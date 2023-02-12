@@ -1,49 +1,52 @@
 package me.beaubaer.mentalism.capabilities;
 
-import net.minecraft.nbt.FloatTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.util.Mth;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
 
-public class FocusCapability implements INBTSerializable<Tag>
+public class Focus implements IFocus
 {
     protected float focus;
     protected float focusLevel;
     protected boolean focusing;
     public ArrayList<IFocusModifier> modifiers;
 
-    public FocusCapability(float focusLevel)
+    public Focus(float focusLevel)
     {
         this.focusLevel = focusLevel;
-        this.focus = 0;
+        this.focus = 0.0f;
         focusing = false;
+        modifiers = new ArrayList<IFocusModifier>();
     }
 
     public void setFocusing(boolean focusing) { this.focusing = focusing; }
+
+    @Override
+    public boolean getFocusing() {
+        return this.focusing;
+    }
 
     public float getFocusPower()
     {
         float focusPower = focus;
 
-        for (IFocusModifier fm : modifiers)
+        /*for (IFocusModifier fm : modifiers)
         {
             if(!fm.isAfterFocusLevel())
             {
                 focusPower = fm.apply(focusPower);
             }
-        }
+        }*/
 
-        focusPower = focusPower * getFocusLevel();
+        focusPower *= getFocusLevel();
 
-        for(IFocusModifier fm : modifiers)
+        /*for(IFocusModifier fm : modifiers)
         {
             if(fm.isAfterFocusLevel())
             {
                 focusPower = fm.apply(focusPower);
             }
-        }
+        }*/
 
         return focusPower;
     }
@@ -61,25 +64,31 @@ public class FocusCapability implements INBTSerializable<Tag>
     // should be called every player tick
     public void updateFocus()
     {
-        if(focusing && focus < 1.0f)
+        if(focusing && (focus < 1.0f))
+        {
             focus += 0.01f;
-        else if(focus > 0.0f)
+        }
+        else if(!focusing && (focus > 0.0f))
+        {
             focus -= 0.01f;
-        else
-            return;
+        }
+
+        focus = Math.min(focus, 1.0f);
+        focus = Math.max(focus, 0.0f);
     }
 
-    @Override
-    public Tag serializeNBT()
+    public void copyFrom(Focus other)
     {
-        return FloatTag.valueOf(this.getFocusLevel());
+        this.focusLevel = other.focusLevel;
     }
 
-    @Override
-    public void deserializeNBT(Tag nbt)
+    public void saveNBTData(CompoundTag nbt)
     {
-        if(!(nbt instanceof FloatTag floatNbt))
-            throw new IllegalArgumentException("AAA WHAT THE FUCK??!?");
-        this.focusLevel = floatNbt.getAsFloat();
+        nbt.putFloat("focusLevel", focusLevel);
+    }
+
+    public void loadNBTData(CompoundTag nbt)
+    {
+        focusLevel = nbt.getFloat("focusLevel");
     }
 }

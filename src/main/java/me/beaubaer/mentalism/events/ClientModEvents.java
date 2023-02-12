@@ -1,7 +1,6 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.capabilities.FocusRegistration;
 import me.beaubaer.mentalism.util.KeyMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
