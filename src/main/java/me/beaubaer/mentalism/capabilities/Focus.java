@@ -30,23 +30,23 @@ public class Focus implements IFocus
     {
         float focusPower = focus;
 
-        /*for (IFocusModifier fm : modifiers)
+        for (IFocusModifier fm : modifiers)
         {
             if(!fm.isAfterFocusLevel())
             {
                 focusPower = fm.apply(focusPower);
             }
-        }*/
+        }
 
         focusPower *= getFocusLevel();
 
-        /*for(IFocusModifier fm : modifiers)
+        for(IFocusModifier fm : modifiers)
         {
             if(fm.isAfterFocusLevel())
             {
                 focusPower = fm.apply(focusPower);
             }
-        }*/
+        }
 
         return focusPower;
     }

@@ -59,11 +59,6 @@ public class ModEvents
         {
             p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
             {
-                if (p.getRandom().nextFloat() < 0.02f)
-                {
-                    // negate focusing
-                    f.setFocusing(true);
-                }
                 f.updateFocus();
 
                 p.sendMessage( new TextComponent("Focusing?: " + f.getFocusing()), Util.NIL_UUID);

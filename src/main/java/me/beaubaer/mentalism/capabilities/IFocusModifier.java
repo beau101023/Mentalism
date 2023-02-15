@@ -2,8 +2,6 @@ package me.beaubaer.mentalism.capabilities;
 
 public interface IFocusModifier
 {
-    boolean afterFocusLevel = false;
-
     Focus parent = null;
 
     public abstract float apply(float initialValue);

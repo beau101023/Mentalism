@@ -1,28 +1,31 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.screens.MeditationScreen;
+import me.beaubaer.mentalism.networking.FocusSyncC2SPacket;
+import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.util.KeyMappings;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Mentalism.MOD_ID, value = Dist.CLIENT)
-public class ClientForgeEvents
+public class ClientEvents
 {
-    @SubscribeEvent
-    public static void keyInput(InputEvent.KeyInputEvent e)
-    {
+    private static boolean previousFKeyState = false;
 
-        Minecraft mc = Minecraft.getInstance();
-        if(KeyMappings.FOCUS_KEY.consumeClick())
+    @SubscribeEvent
+    public static void checkKeyOnTick(TickEvent.ClientTickEvent e)
+    {
+        boolean currentFKeyState = KeyMappings.FOCUS_KEY.isDown();
+
+        if(currentFKeyState != previousFKeyState)
         {
+            previousFKeyState = currentFKeyState;
+
+            // set focusing on server to focus key state
+            MentalismMessages.sendToServer(new FocusSyncC2SPacket(currentFKeyState));
+
             /*Component c = new TranslatableComponent("title.mentalism.menu.void");
             MeditationScreen ms = new MeditationScreen(c);
             mc.setScreen(ms);*/

@@ -1,6 +1,7 @@
 package me.beaubaer.mentalism;
 
 import com.mojang.logging.LogUtils;
+import me.beaubaer.mentalism.networking.MentalismMessages;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,5 +24,8 @@ public class Mentalism
     {
         // some preinit code
         LOGGER.info("HELLO FROM MENTALISM");
+
+        event.enqueueWork(() ->
+                MentalismMessages.register());
     }
 }
