@@ -1,22 +1,23 @@
 package me.beaubaer.mentalism.capabilities;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Focus implements IFocus
 {
     protected float focus;
-    protected float focusLevel;
     protected boolean focusing;
-    public ArrayList<IFocusModifier> modifiers;
+    public ArrayList<FocusModifier> modifiers;
 
-    public Focus(float focusLevel)
+    public Focus()
     {
-        this.focusLevel = focusLevel;
         this.focus = 0.0f;
         focusing = false;
-        modifiers = new ArrayList<IFocusModifier>();
+        modifiers = new ArrayList<>();
     }
 
     public void setFocusing(boolean focusing) { this.focusing = focusing; }
@@ -30,40 +31,37 @@ public class Focus implements IFocus
     {
         float focusPower = focus;
 
-        for (IFocusModifier fm : modifiers)
+        for (FocusModifier fm : modifiers)
         {
-            if(!fm.isAfterFocusLevel())
-            {
-                focusPower = fm.apply(focusPower);
-            }
-        }
-
-        focusPower *= getFocusLevel();
-
-        for(IFocusModifier fm : modifiers)
-        {
-            if(fm.isAfterFocusLevel())
-            {
-                focusPower = fm.apply(focusPower);
-            }
+            focusPower = fm.apply(focusPower);
         }
 
         return focusPower;
     }
 
-    public float getFocusLevel()
+    public ArrayList<FocusModifier> getModifiers(Class<? extends FocusModifier> modifierType)
     {
-        return this.focusLevel;
-    }
+        ArrayList<FocusModifier> selected = new ArrayList<>();
 
-    public void setFocusLevel(float focusLevel)
-    {
-        this.focusLevel = focusLevel;
+        for(FocusModifier fm : modifiers)
+        {
+            if(fm.getClass() == modifierType)
+            {
+                selected.add(fm);
+            }
+        }
+
+        return selected;
     }
 
     // should be called every player tick
     public void updateFocus()
     {
+        if(focusing && focus >= 1.0f)
+            return;
+        if(!focusing && focus <=0.0f)
+            return;
+
         if(focusing && (focus < 1.0f))
         {
             focus += 0.01f;
@@ -79,16 +77,71 @@ public class Focus implements IFocus
 
     public void copyFrom(Focus other)
     {
-        this.focusLevel = other.focusLevel;
+        for(FocusModifier fm : other.modifiers)
+        {
+            if(fm.shouldCopy())
+            {
+                this.modifiers.add(fm);
+            }
+        }
     }
 
     public void saveNBTData(CompoundTag nbt)
     {
-        nbt.putFloat("focusLevel", focusLevel);
+        ListTag modifierList = new ListTag();
+        for(FocusModifier fm : modifiers)
+        {
+            if(fm.shouldSave())
+            {
+                fm.saveNBTData(modifierList);
+            }
+        }
+        nbt.put("modifiers", modifierList);
     }
 
     public void loadNBTData(CompoundTag nbt)
     {
-        focusLevel = nbt.getFloat("focusLevel");
+        ListTag modifierListTag = nbt.getList("modifiers", Tag.TAG_COMPOUND);
+
+        modifiers = loadModifiers(modifierListTag);
+    }
+
+    // take a list of compoundTags and turn them into modifiers! yay!
+    public ArrayList<FocusModifier> loadModifiers(ListTag modifierList)
+    {
+        ArrayList<FocusModifier> loadedModifiers = new ArrayList<>();
+
+        for(Object tag : modifierList.toArray())
+        {
+            FocusModifier fm = loadModifier((CompoundTag) tag);
+            loadedModifiers.add(fm);
+        }
+
+        return loadedModifiers;
+    }
+
+    public FocusModifier loadModifier(CompoundTag nbt)
+    {
+        String className = nbt.getString("type");
+        Class c;
+        try
+        {
+            c = Class.forName(className);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new RuntimeException("No modifier found with the corresponding class name.", e);
+        }
+
+        FocusModifier fm;
+        try {
+            fm = (FocusModifier) c.getDeclaredConstructor().newInstance(this);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        fm.loadNBTData(nbt);
+
+        return fm;
     }
 }
