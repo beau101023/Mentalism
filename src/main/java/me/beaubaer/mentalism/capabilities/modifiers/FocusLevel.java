@@ -9,9 +9,20 @@ public class FocusLevel extends FocusModifier
 {
     private float level;
 
-    public FocusLevel(Focus parent)
+    public FocusLevel(Focus parent, float level)
     {
-        super(parent, 1);
+        super(parent, 3);
+        this.level = level;
+    }
+
+    public void setLevel(float level)
+    {
+        this.level = level;
+    }
+
+    public float getLevel()
+    {
+        return this.level;
     }
 
     @Override

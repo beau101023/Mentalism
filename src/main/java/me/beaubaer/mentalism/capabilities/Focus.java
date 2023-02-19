@@ -50,6 +50,8 @@ public class Focus implements IFocus
     // should be called every player tick
     public void updateFocus()
     {
+        updateModifiers();
+
         if(focusing && focus >= 1.0f)
             return;
         if(!focusing && focus <=0.0f)
@@ -68,7 +70,7 @@ public class Focus implements IFocus
         focus = Math.max(focus, 0.0f);
     }
 
-    public void updateModifiers()
+    private void updateModifiers()
     {
         for(TickingFocusModifier tfm : modifiers.collectType(TickingFocusModifier.class))
         {
@@ -108,7 +110,7 @@ public class Focus implements IFocus
     }
 
     // take a list of compoundTags and turn them into modifiers! yay!
-    public ModifierPriorityMap loadModifiers(ListTag modifierList)
+    private ModifierPriorityMap loadModifiers(ListTag modifierList)
     {
         ModifierPriorityMap loadedModifiers = new ModifierPriorityMap();
 
@@ -121,7 +123,7 @@ public class Focus implements IFocus
         return loadedModifiers;
     }
 
-    public FocusModifier loadModifier(CompoundTag nbt)
+    private FocusModifier loadModifier(CompoundTag nbt)
     {
         String className = nbt.getString("type");
         Class c;

@@ -1,5 +1,6 @@
 package me.beaubaer.mentalism.capabilities;
 
+import me.beaubaer.mentalism.capabilities.modifiers.FocusLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,6 +25,8 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
         {
             this.focus = new Focus();
         }
+
+        this.focus.modifiers.put(new FocusLevel(this.focus, 1.0f));
 
         return this.focus;
     }
