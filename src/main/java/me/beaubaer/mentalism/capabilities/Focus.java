@@ -1,23 +1,26 @@
 package me.beaubaer.mentalism.capabilities;
 
+import me.beaubaer.mentalism.datastructures.ModifierPriorityMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Focus implements IFocus
 {
     protected float focus;
     protected boolean focusing;
-    public ArrayList<FocusModifier> modifiers;
+    public ModifierPriorityMap modifiers;
 
     public Focus()
     {
         this.focus = 0.0f;
         focusing = false;
-        modifiers = new ArrayList<>();
+        modifiers = new ModifierPriorityMap();
     }
 
     public void setFocusing(boolean focusing) { this.focusing = focusing; }
@@ -31,7 +34,7 @@ public class Focus implements IFocus
     {
         float focusPower = focus;
 
-        for (FocusModifier fm : modifiers)
+        for(FocusModifier fm : modifiers.collectAll())
         {
             focusPower = fm.apply(focusPower);
         }
@@ -39,19 +42,9 @@ public class Focus implements IFocus
         return focusPower;
     }
 
-    public ArrayList<FocusModifier> getModifiers(Class<? extends FocusModifier> modifierType)
+    public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
     {
-        ArrayList<FocusModifier> selected = new ArrayList<>();
-
-        for(FocusModifier fm : modifiers)
-        {
-            if(fm.getClass() == modifierType)
-            {
-                selected.add(fm);
-            }
-        }
-
-        return selected;
+        return modifiers.collectType(modifierType);
     }
 
     // should be called every player tick
@@ -75,13 +68,21 @@ public class Focus implements IFocus
         focus = Math.max(focus, 0.0f);
     }
 
+    public void updateModifiers()
+    {
+        for(TickingFocusModifier tfm : modifiers.collectType(TickingFocusModifier.class))
+        {
+            tfm.update();
+        }
+    }
+
     public void copyFrom(Focus other)
     {
-        for(FocusModifier fm : other.modifiers)
+        for(FocusModifier fm : other.modifiers.collectAll())
         {
             if(fm.shouldCopy())
             {
-                this.modifiers.add(fm);
+                this.modifiers.put(fm);
             }
         }
     }
@@ -89,7 +90,7 @@ public class Focus implements IFocus
     public void saveNBTData(CompoundTag nbt)
     {
         ListTag modifierList = new ListTag();
-        for(FocusModifier fm : modifiers)
+        for(FocusModifier fm : modifiers.collectAll())
         {
             if(fm.shouldSave())
             {
@@ -107,14 +108,14 @@ public class Focus implements IFocus
     }
 
     // take a list of compoundTags and turn them into modifiers! yay!
-    public ArrayList<FocusModifier> loadModifiers(ListTag modifierList)
+    public ModifierPriorityMap loadModifiers(ListTag modifierList)
     {
-        ArrayList<FocusModifier> loadedModifiers = new ArrayList<>();
+        ModifierPriorityMap loadedModifiers = new ModifierPriorityMap();
 
         for(Object tag : modifierList.toArray())
         {
             FocusModifier fm = loadModifier((CompoundTag) tag);
-            loadedModifiers.add(fm);
+            loadedModifiers.put(fm);
         }
 
         return loadedModifiers;

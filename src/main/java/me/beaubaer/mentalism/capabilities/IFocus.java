@@ -2,12 +2,12 @@ package me.beaubaer.mentalism.capabilities;
 
 public interface IFocus
 {
-    public void setFocusing(boolean focusing);
+    void setFocusing(boolean focusing);
 
-    public boolean getFocusing();
+    boolean getFocusing();
 
-    public float getFocusPower();
+    float getFocusPower();
 
     // should be called every player tick
-    public void updateFocus();
+    void updateFocus();
 }

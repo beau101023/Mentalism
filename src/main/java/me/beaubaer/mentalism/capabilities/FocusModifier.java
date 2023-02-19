@@ -5,11 +5,14 @@ import net.minecraft.nbt.ListTag;
 
 public abstract class FocusModifier
 {
+    public int priority;
+
     Focus parent;
 
-    public FocusModifier(Focus parent)
+    public FocusModifier(Focus parent, int priority)
     {
         this.parent = parent;
+        this.priority = priority;
     }
 
     public abstract float apply(float initialValue);
