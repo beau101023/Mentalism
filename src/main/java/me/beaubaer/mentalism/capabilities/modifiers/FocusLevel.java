@@ -9,6 +9,11 @@ public class FocusLevel extends FocusModifier
 {
     private float level;
 
+    public FocusLevel(Focus parent, CompoundTag tag)
+    {
+        super(parent, tag);
+    }
+
     public FocusLevel(Focus parent, float level)
     {
         super(parent, 3);

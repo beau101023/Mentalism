@@ -153,12 +153,10 @@ public class Focus implements IFocus
 
         FocusModifier fm;
         try {
-            fm = (FocusModifier) c.getDeclaredConstructor().newInstance(this);
+            fm = (FocusModifier) c.getConstructor(Focus.class, CompoundTag.class).newInstance(this, nbt);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-
-        fm.loadNBTData(nbt);
 
         return fm;
     }

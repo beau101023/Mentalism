@@ -9,6 +9,12 @@ public abstract class FocusModifier
 
     protected Focus parent;
 
+    public FocusModifier(Focus parent, CompoundTag tag)
+    {
+        this.parent = parent;
+        this.loadNBTData(tag);
+    }
+
     public FocusModifier(Focus parent, int priority)
     {
         this.parent = parent;
