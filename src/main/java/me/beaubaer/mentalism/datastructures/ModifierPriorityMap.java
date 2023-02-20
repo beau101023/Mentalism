@@ -44,7 +44,7 @@ public class ModifierPriorityMap extends TreeMap<Integer, ArrayList<FocusModifie
 
         for(FocusModifier fm : this.collectAll())
         {
-            if (fm.getClass() == modifierType)
+            if (modifierType.isInstance(fm))
             {
                 selected.add((T)fm);
             }

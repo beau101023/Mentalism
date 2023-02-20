@@ -8,8 +8,6 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import net.minecraftforge.network.simple.SimpleChannel;
-
 public class MentalismMessages
 {
     private static SimpleChannel INSTANCE;
@@ -35,6 +33,12 @@ public class MentalismMessages
             .decoder(FocusSyncC2SPacket::new)
             .encoder(FocusSyncC2SPacket::toBytes)
             .consumer(FocusSyncC2SPacket::handle)
+            .add();
+
+    net.messageBuilder(OpenMeditationS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(OpenMeditationS2CPacket::new)
+            .encoder(OpenMeditationS2CPacket::toBytes)
+            .consumer(OpenMeditationS2CPacket::handle)
             .add();
 }
 

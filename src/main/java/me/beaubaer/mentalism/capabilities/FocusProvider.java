@@ -24,9 +24,8 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
         if(this.focus == null)
         {
             this.focus = new Focus();
+            this.focus.putModifier(new FocusLevel(this.focus, 1.0f));
         }
-
-        this.focus.modifiers.put(new FocusLevel(this.focus, 1.0f));
 
         return this.focus;
     }

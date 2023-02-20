@@ -3,23 +3,28 @@ package me.beaubaer.mentalism.events;
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.Focus;
 import me.beaubaer.mentalism.capabilities.FocusProvider;
+import me.beaubaer.mentalism.capabilities.modifiers.AntiDistraction;
+import me.beaubaer.mentalism.networking.MentalismMessages;
+import me.beaubaer.mentalism.networking.OpenMeditationS2CPacket;
 import net.minecraft.Util;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.concurrent.atomic.AtomicReference;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 @Mod.EventBusSubscriber(modid = Mentalism.MOD_ID)
-public class ModEvents
+public class ServerEvents
 {
     @SubscribeEvent
     public static void attachCapabilities(AttachCapabilitiesEvent<Entity> e)
@@ -53,17 +58,44 @@ public class ModEvents
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent e)
     {
-        Player p = e.player;
+        if(e.side != LogicalSide.SERVER)
+            return;
 
-        if(e.side == LogicalSide.SERVER)
+        ServerPlayer p = (ServerPlayer) e.player;
+
+        p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
         {
-            p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
-            {
-                f.updateFocus();
+            f.updateFocus();
 
-                p.sendMessage( new TextComponent("Focusing?: " + f.getFocusing()), Util.NIL_UUID);
-                p.sendMessage( new TextComponent("Focus is " + f.getFocusPower() ), Util.NIL_UUID);
-            });
+            if(f.getFocusPower() > 1.1f)
+            {
+                MentalismMessages.sendToPlayer(new OpenMeditationS2CPacket(), p);
+            }
+
+            p.sendMessage( new TextComponent("Focusing?: " + f.getFocusing()), Util.NIL_UUID);
+            p.sendMessage( new TextComponent("Focus is " + f.getFocusPower() ), Util.NIL_UUID);
+            p.sendMessage( new TextComponent("Number of focus modifiers is " + f.getModifiers().size()), Util.NIL_UUID);
+        });
+    }
+
+    @SubscribeEvent
+    public static void entitySoundPlayed(VanillaGameEvent e)
+    {
+        if(e.getLevel().isClientSide)
+            return;
+
+        if(e.getVanillaEvent() != GameEvent.RING_BELL)
+            return;
+
+        for(ServerPlayer p : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
+        {
+            if(e.getEventPosition().closerToCenterThan(p.position(), 32f))
+            {
+                p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
+                {
+                    f.putModifier(new AntiDistraction(f, 4, 0.2f, 3.5f, AntiDistraction.BELL_ANTIDISTRACTION));
+                });
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ public class Focus implements IFocus
 {
     protected float focus;
     protected boolean focusing;
-    public ModifierPriorityMap modifiers;
+    private ModifierPriorityMap modifiers;
 
     public Focus()
     {
@@ -39,12 +39,27 @@ public class Focus implements IFocus
             focusPower = fm.apply(focusPower);
         }
 
-        return focusPower;
+        return Math.max(0f, focusPower);
     }
 
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
     {
         return modifiers.collectType(modifierType);
+    }
+
+    public ArrayList<FocusModifier> getModifiers()
+    {
+        return modifiers.collectAll();
+    }
+
+    public void putModifier(FocusModifier fm)
+    {
+        modifiers.put(fm);
+    }
+
+    public void removeModifier(FocusModifier fm)
+    {
+        modifiers.remove(fm);
     }
 
     // should be called every player tick

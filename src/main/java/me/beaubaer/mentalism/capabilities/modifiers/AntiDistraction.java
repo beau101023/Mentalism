@@ -5,8 +5,10 @@ import me.beaubaer.mentalism.capabilities.TickingFocusModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
-public class Distraction extends TickingFocusModifier
+public class AntiDistraction extends TickingFocusModifier
 {
+    public static String BELL_ANTIDISTRACTION = "mentalism.antidistraction.bell";
+
     float maxAmount;
     float amount;
     float decayTime;
@@ -16,7 +18,7 @@ public class Distraction extends TickingFocusModifier
     // what kind of distraction this is, used to determine some things in the future
     String typeID;
 
-    public Distraction(Focus parent, int priority, float amount, float decayTime, String typeID)
+    public AntiDistraction(Focus parent, int priority, float amount, float decayTime, String typeID)
     {
         super(parent, priority);
         this.maxAmount = amount;
@@ -30,7 +32,9 @@ public class Distraction extends TickingFocusModifier
     @Override
     public float apply(float initialValue)
     {
-        return initialValue - amount;
+        if(parent.getFocusing())
+            return initialValue + amount;
+        else return initialValue;
     }
 
     @Override

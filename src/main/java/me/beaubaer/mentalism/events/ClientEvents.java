@@ -25,10 +25,6 @@ public class ClientEvents
 
             // set focusing on server to focus key state
             MentalismMessages.sendToServer(new FocusSyncC2SPacket(currentFKeyState));
-
-            /*Component c = new TranslatableComponent("title.mentalism.menu.void");
-            MeditationScreen ms = new MeditationScreen(c);
-            mc.setScreen(ms);*/
         }
     }
 }
