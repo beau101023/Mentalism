@@ -7,27 +7,41 @@ import net.minecraft.nbt.ListTag;
 
 public class Distraction extends TickingFocusModifier
 {
-    public Distraction(Focus parent, int priority)
+    float maxAmount;
+    float amount;
+    float decayTime;
+
+    private float tickDecayAmount;
+
+    // what kind of distraction this is, used to determine some things in the future
+    String typeID;
+
+    public Distraction(Focus parent, int priority, float amount, float decayTime, String typeID)
     {
         super(parent, priority);
+        this.amount = amount;
+        this.typeID = typeID;
+        this.decayTime = decayTime;
+
+        tickDecayAmount = maxAmount/(decayTime*20);
     }
 
     @Override
     public float apply(float initialValue)
     {
-        return 0;
+        return initialValue - amount;
     }
 
     @Override
     public void saveNBTData(ListTag nbt)
     {
-
+        return;
     }
 
     @Override
     public void loadNBTData(CompoundTag nbt)
     {
-
+        return;
     }
 
     @Override
@@ -45,6 +59,16 @@ public class Distraction extends TickingFocusModifier
     @Override
     public void update()
     {
+        this.decay();
+    }
 
+    private void decay()
+    {
+        this.amount -= tickDecayAmount;
+
+        if(this.amount <= 0.0f)
+        {
+            this.parent.modifiers.remove(this);
+        }
     }
 }

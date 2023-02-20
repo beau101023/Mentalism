@@ -7,7 +7,7 @@ public abstract class FocusModifier
 {
     public int priority;
 
-    Focus parent;
+    protected Focus parent;
 
     public FocusModifier(Focus parent, int priority)
     {

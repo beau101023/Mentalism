@@ -16,6 +16,11 @@ public class ModifierPriorityMap extends TreeMap<Integer, ArrayList<FocusModifie
         this.get(fm.priority).add(fm);
     }
 
+    public void remove(FocusModifier fm)
+    {
+        this.collectPriority(fm.priority).remove(fm);
+    }
+
     public ArrayList<FocusModifier> collectAll()
     {
         ArrayList<FocusModifier> all = new ArrayList<>();
