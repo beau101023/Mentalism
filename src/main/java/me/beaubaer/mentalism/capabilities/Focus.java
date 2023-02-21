@@ -7,13 +7,20 @@ import net.minecraft.nbt.Tag;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class Focus implements IFocus
 {
     protected float focus;
+
+    // whether or not the player is attempting to focus via KeyMappings.FOCUS_KEY
     protected boolean focusing;
+
+    // whether the player can currently focus
+    protected boolean canFocus;
+    public static float DEFAULT_FOCUS_TIME = 1.0f;
+    public static float DEFAULT_FOCUS_DECAY_TIME = 1.0f;
+    protected float focusTime = 1.0f;
+    protected float focusDecayTime = 1.0f;
     private ModifierPriorityMap modifiers;
 
     public Focus()
@@ -23,11 +30,34 @@ public class Focus implements IFocus
         modifiers = new ModifierPriorityMap();
     }
 
-    public void setFocusing(boolean focusing) { this.focusing = focusing; }
+    public void setCanFocus(boolean canFocus)
+    {
+        this.canFocus = canFocus;
+
+        if(!canFocus)
+            this.focusing = false;
+    }
+
+    public boolean getCanFocus()
+    {
+        return canFocus;
+    }
+
+    public void setFocusing(boolean focusing) { this.focusing = focusing && canFocus; }
 
     @Override
     public boolean getFocusing() {
         return this.focusing;
+    }
+
+    public void setFocusTime(float timeToFull)
+    {
+        focusTime = timeToFull;
+    }
+
+    public float getFocusTime()
+    {
+        return focusTime;
     }
 
     public float getFocusPower()
@@ -74,11 +104,11 @@ public class Focus implements IFocus
 
         if(focusing && (focus < 1.0f))
         {
-            focus += 0.01f;
+            focus += 1/(focusTime*20);
         }
         else if(!focusing && (focus > 0.0f))
         {
-            focus -= 0.01f;
+            focus -= 1/(focusDecayTime*20);
         }
 
         focus = Math.min(focus, 1.0f);

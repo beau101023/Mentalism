@@ -61,6 +61,9 @@ public class ServerEvents
         if(e.side != LogicalSide.SERVER)
             return;
 
+        if(e.phase == TickEvent.Phase.END)
+            return;
+
         ServerPlayer p = (ServerPlayer) e.player;
 
         p.getCapability(FocusProvider.FOCUS).ifPresent(f ->

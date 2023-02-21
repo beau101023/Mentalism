@@ -40,6 +40,18 @@ public class MentalismMessages
             .encoder(OpenMeditationS2CPacket::toBytes)
             .consumer(OpenMeditationS2CPacket::handle)
             .add();
+
+    net.messageBuilder(SetFocusTimeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(SetFocusTimeC2SPacket::new)
+            .encoder(SetFocusTimeC2SPacket::toBytes)
+            .consumer(SetFocusTimeC2SPacket::handle)
+            .add();
+
+    net.messageBuilder(SetCanFocusC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(SetCanFocusC2SPacket::new)
+            .encoder(SetCanFocusC2SPacket::toBytes)
+            .consumer(SetCanFocusC2SPacket::handle)
+            .add();
 }
 
     public static <MSG> void sendToServer(MSG message) {
