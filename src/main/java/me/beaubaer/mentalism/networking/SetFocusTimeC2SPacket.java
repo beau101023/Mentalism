@@ -1,6 +1,6 @@
 package me.beaubaer.mentalism.networking;
 
-import me.beaubaer.mentalism.capabilities.FocusProvider;
+import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;

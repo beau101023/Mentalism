@@ -37,6 +37,7 @@ public class ClientEvents
 
         boolean crouching = mc.options.keyShift.isDown();
 
+        // make sure to only update the server when changes are detected
         if (moving != previousMoving || crouching != previousCrouching)
         {
             if (!moving)
@@ -44,7 +45,7 @@ public class ClientEvents
                 MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(1.0f));
                 MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));
             }
-            else if (crouching && moving)
+            else if (crouching)
             {
                 MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(10.0f));
                 MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));

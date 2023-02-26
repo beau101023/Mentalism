@@ -1,5 +1,6 @@
-package me.beaubaer.mentalism.capabilities;
+package me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers;
 
+import me.beaubaer.mentalism.capabilities.focus.Focus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
@@ -7,7 +8,7 @@ public abstract class FocusModifier
 {
     public int priority;
 
-    public String typeID;
+    public String ID;
     protected Focus parent;
 
     public FocusModifier(Focus parent, CompoundTag tag)
@@ -16,19 +17,20 @@ public abstract class FocusModifier
         this.loadNBTData(tag);
     }
 
-    public FocusModifier(Focus parent, int priority)
+    public FocusModifier(Focus parent, int priority, String ID)
     {
         this.parent = parent;
         this.priority = priority;
+        this.ID = ID;
     }
 
     public abstract float apply(float initialValue);
 
-    public abstract void saveNBTData(ListTag nbt);
+    public void saveNBTData(ListTag nbt) {}
 
-    public abstract void loadNBTData(CompoundTag nbt);
+    public void loadNBTData(CompoundTag nbt) {}
 
-    public abstract boolean shouldCopy();
+    public boolean shouldCopy() { return false; }
 
-    public abstract boolean shouldSave();
+    public boolean shouldSave() { return false; }
 }

@@ -1,6 +1,6 @@
 package me.beaubaer.mentalism.datastructures;
 
-import me.beaubaer.mentalism.capabilities.FocusModifier;
+import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -46,7 +46,7 @@ public class ModifierPriorityMap extends TreeMap<Integer, ArrayList<FocusModifie
         {
             if (modifierType.isInstance(fm))
             {
-                selected.add((T)fm);
+                selected.add(modifierType.cast(fm));
             }
         }
 

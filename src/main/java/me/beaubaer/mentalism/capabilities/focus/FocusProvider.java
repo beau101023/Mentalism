@@ -1,6 +1,7 @@
-package me.beaubaer.mentalism.capabilities;
+package me.beaubaer.mentalism.capabilities.focus;
 
-import me.beaubaer.mentalism.capabilities.modifiers.FocusLevel;
+import me.beaubaer.mentalism.capabilities.focus.Focus;
+import me.beaubaer.mentalism.capabilities.focus.modifiers.FocusLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -14,7 +15,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class FocusProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    public static Capability<Focus> FOCUS = CapabilityManager.get(new CapabilityToken<Focus>() {} );
+    public static Capability<Focus> FOCUS = CapabilityManager.get(new CapabilityToken<>()
+    {
+    } );
 
     private Focus focus = null;
     private final LazyOptional<Focus> optional = LazyOptional.of(this::createFocus);
@@ -24,7 +27,7 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
         if(this.focus == null)
         {
             this.focus = new Focus();
-            this.focus.putModifier(new FocusLevel(this.focus, 1.0f));
+            this.focus.putModifier(new FocusLevel(this.focus, 1.0f, FocusLevel.UNIVERSAL_FOCUSLEVEL));
         }
 
         return this.focus;

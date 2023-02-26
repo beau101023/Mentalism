@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.capabilities;
+package me.beaubaer.mentalism.capabilities.focus;
 
 public interface IFocus
 {

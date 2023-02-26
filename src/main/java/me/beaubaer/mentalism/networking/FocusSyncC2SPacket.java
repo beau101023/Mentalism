@@ -1,6 +1,6 @@
 package me.beaubaer.mentalism.networking;
 
-import me.beaubaer.mentalism.capabilities.FocusProvider;
+import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -26,7 +26,7 @@ public class FocusSyncC2SPacket
         buf.writeBoolean(focusing);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier)
+    public void handle(Supplier<NetworkEvent.Context> supplier)
     {
         NetworkEvent.Context context = supplier.get();
 
@@ -36,6 +36,6 @@ public class FocusSyncC2SPacket
             player.getCapability(FocusProvider.FOCUS).ifPresent(f ->
                     f.setFocusing(focusing));
         });
-        return true;
+        context.setPacketHandled(true);
     }
 }

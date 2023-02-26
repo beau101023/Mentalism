@@ -1,5 +1,7 @@
-package me.beaubaer.mentalism.capabilities;
+package me.beaubaer.mentalism.capabilities.focus;
 
+import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
+import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.TickingFocusModifier;
 import me.beaubaer.mentalism.datastructures.ModifierPriorityMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -7,18 +9,19 @@ import net.minecraft.nbt.Tag;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Focus implements IFocus
 {
     protected float focus;
 
-    // whether or not the player is attempting to focus via KeyMappings.FOCUS_KEY
+    // whether the player is attempting to focus via KeyMappings.FOCUS_KEY
     protected boolean focusing;
 
     // whether the player can currently focus
     protected boolean canFocus;
-    public static float DEFAULT_FOCUS_TIME = 1.0f;
-    public static float DEFAULT_FOCUS_DECAY_TIME = 1.0f;
+    public static final float DEFAULT_FOCUS_TIME = 1.0f;
+    public static final float DEFAULT_FOCUS_DECAY_TIME = 1.0f;
     protected float focusTime = 1.0f;
     protected float focusDecayTime = 1.0f;
     private ModifierPriorityMap modifiers;
@@ -28,6 +31,7 @@ public class Focus implements IFocus
         this.focus = 0.0f;
         focusing = false;
         modifiers = new ModifierPriorityMap();
+        canFocus = true;
     }
 
     public void setCanFocus(boolean canFocus)
@@ -44,6 +48,11 @@ public class Focus implements IFocus
     }
 
     public void setFocusing(boolean focusing) { this.focusing = focusing && canFocus; }
+
+    public void interruptFocus()
+    {
+        this.focusing = false;
+    }
 
     @Override
     public boolean getFocusing() {
@@ -72,14 +81,25 @@ public class Focus implements IFocus
         return Math.max(0f, focusPower);
     }
 
-    public boolean hasModifierByType(String typeID)
+    public boolean hasModifier(String ID)
     {
-        return getModifiers().stream().anyMatch(f -> f.typeID == typeID);
+        return getModifiers().stream().anyMatch(modifier -> modifier.ID.equals(ID));
     }
 
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
     {
         return modifiers.collectType(modifierType);
+    }
+
+    public FocusModifier getModifier(String ID)
+    {
+        List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.ID.equals(ID)).toList();
+
+        if(modifiers.size() > 1)
+        {
+            throw new RuntimeException("ID " + ID + " has more than one associated modifier.");
+        }
+        else return modifiers.get(0);
     }
 
     public ArrayList<FocusModifier> getModifiers()

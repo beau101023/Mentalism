@@ -1,6 +1,6 @@
 package me.beaubaer.mentalism.networking;
 
-import me.beaubaer.mentalism.capabilities.FocusProvider;
+import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class SetCanFocusC2SPacket
 {
-    private boolean canFocus;
+    private final boolean canFocus;
 
     public SetCanFocusC2SPacket(boolean canFocus)
     {

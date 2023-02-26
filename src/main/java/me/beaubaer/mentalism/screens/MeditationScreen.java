@@ -39,7 +39,7 @@ public class MeditationScreen extends Screen
     }
 
     @Override
-    public void renderBackground(PoseStack pPoseStack, int pVOffset)
+    public void renderBackground(@NotNull PoseStack pPoseStack, int pVOffset)
     {
         int alpha= Math.round(255*renderTicks/(fadeInTime*20));
 
