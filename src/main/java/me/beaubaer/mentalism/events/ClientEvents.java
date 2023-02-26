@@ -55,16 +55,14 @@ public class ClientEvents
                 // player shouldn't be able to focus here
                 MentalismMessages.sendToServer(new SetCanFocusC2SPacket(false));
             }
+            previousMoving = moving;
+            previousCrouching = crouching;
         }
 
         if (currentFKeyState != previousFKeyState)
         {
             MentalismMessages.sendToServer(new FocusSyncC2SPacket(currentFKeyState));
+            previousFKeyState = currentFKeyState;
         }
-
-        // Update previous state
-        previousFKeyState = currentFKeyState;
-        previousMoving = moving;
-        previousCrouching = crouching;
     }
 }

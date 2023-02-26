@@ -7,6 +7,7 @@ public abstract class FocusModifier
 {
     public int priority;
 
+    public String typeID;
     protected Focus parent;
 
     public FocusModifier(Focus parent, CompoundTag tag)
