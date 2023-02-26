@@ -74,7 +74,7 @@ public class Focus implements IFocus
 
     public boolean hasModifierByType(String typeID)
     {
-        return modifiers.collectAll().stream().anyMatch(f -> f.typeID == typeID);
+        return getModifiers().stream().anyMatch(f -> f.typeID == typeID);
     }
 
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
