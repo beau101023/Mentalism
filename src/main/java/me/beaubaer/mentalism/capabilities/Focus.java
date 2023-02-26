@@ -72,6 +72,11 @@ public class Focus implements IFocus
         return Math.max(0f, focusPower);
     }
 
+    public boolean hasModifierByType(String typeID)
+    {
+        return modifiers.collectAll().stream().anyMatch(f -> f.typeID == typeID);
+    }
+
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
     {
         return modifiers.collectType(modifierType);
