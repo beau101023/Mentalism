@@ -1,6 +1,6 @@
 package me.beaubaer.mentalism.networking;
 
-import me.beaubaer.mentalism.screens.MeditationScreen;
+import me.beaubaer.mentalism.gui.screens.MeditationScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

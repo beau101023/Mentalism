@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.screens;
+package me.beaubaer.mentalism.gui.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
