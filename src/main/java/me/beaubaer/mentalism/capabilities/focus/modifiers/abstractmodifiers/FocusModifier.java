@@ -28,7 +28,22 @@ public abstract class FocusModifier
 
     public void saveNBTData(ListTag nbt) {}
 
+    protected CompoundTag saveCoreNBTData()
+    {
+        CompoundTag thisData = new CompoundTag();
+        thisData.putString("type", this.getClass().getCanonicalName());
+        thisData.putInt("priority", priority);
+        thisData.putString("ID", ID);
+        return thisData;
+    }
+
     public void loadNBTData(CompoundTag nbt) {}
+
+    protected void loadCoreNBTData(CompoundTag nbt)
+    {
+        this.priority = nbt.getInt("priority");
+        this.ID = nbt.getString("ID");
+    }
 
     public boolean shouldCopy() { return false; }
 

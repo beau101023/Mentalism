@@ -41,18 +41,16 @@ public class FocusLevel extends FocusModifier
     @Override
     public void saveNBTData(ListTag nbt)
     {
-        CompoundTag thisData = new CompoundTag();
-        thisData.putString("type", this.getClass().getCanonicalName());
+        CompoundTag thisData = saveCoreNBTData();
         thisData.putFloat("level", level);
-        thisData.putInt("priority", priority);
         nbt.add(thisData);
     }
 
     @Override
     public void loadNBTData(CompoundTag nbt)
     {
+        loadCoreNBTData(nbt);
         level = nbt.getFloat("level");
-        priority = nbt.getInt("priority");
     }
 
     @Override
