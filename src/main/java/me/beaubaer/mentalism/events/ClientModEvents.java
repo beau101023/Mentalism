@@ -1,8 +1,10 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
+import me.beaubaer.mentalism.gui.radialmenu.RadialMenuOverlay;
 import me.beaubaer.mentalism.util.KeyMappings;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -14,5 +16,7 @@ public class ClientModEvents
     public static void clientSetup(FMLClientSetupEvent event)
     {
         KeyMappings.initializeMappings();
+
+        OverlayRegistry.registerOverlayTop("SpellMenu", RadialMenuOverlay.SPELL_MENU);
     }
 }
