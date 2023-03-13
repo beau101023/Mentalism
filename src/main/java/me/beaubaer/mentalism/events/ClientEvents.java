@@ -1,7 +1,7 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.networking.FocusSyncC2SPacket;
+import me.beaubaer.mentalism.networking.FocusKeySyncC2SPacket;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.SetCanFocusC2SPacket;
 import me.beaubaer.mentalism.networking.SetFocusTimeC2SPacket;
@@ -62,7 +62,7 @@ public class ClientEvents
 
         if (currentFKeyState != previousFKeyState)
         {
-            MentalismMessages.sendToServer(new FocusSyncC2SPacket(currentFKeyState));
+            MentalismMessages.sendToServer(new FocusKeySyncC2SPacket(currentFKeyState));
             previousFKeyState = currentFKeyState;
         }
     }

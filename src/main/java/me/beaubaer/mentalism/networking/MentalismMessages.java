@@ -29,10 +29,10 @@ public class MentalismMessages
 
     INSTANCE = net;
 
-    net.messageBuilder(FocusSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-            .decoder(FocusSyncC2SPacket::new)
-            .encoder(FocusSyncC2SPacket::toBytes)
-            .consumer(FocusSyncC2SPacket::handle)
+    net.messageBuilder(FocusKeySyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(FocusKeySyncC2SPacket::new)
+            .encoder(FocusKeySyncC2SPacket::toBytes)
+            .consumer(FocusKeySyncC2SPacket::handle)
             .add();
 
     net.messageBuilder(OpenMeditationS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)

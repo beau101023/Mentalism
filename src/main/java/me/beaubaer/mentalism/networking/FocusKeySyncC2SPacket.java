@@ -7,16 +7,16 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class FocusSyncC2SPacket
+public class FocusKeySyncC2SPacket
 {
     private final boolean focusing;
 
-    public FocusSyncC2SPacket(boolean focusing)
+    public FocusKeySyncC2SPacket(boolean focusing)
     {
         this.focusing = focusing;
     }
 
-    public FocusSyncC2SPacket(FriendlyByteBuf buf)
+    public FocusKeySyncC2SPacket(FriendlyByteBuf buf)
     {
         focusing = buf.readBoolean();
     }
@@ -34,7 +34,7 @@ public class FocusSyncC2SPacket
         {
             ServerPlayer player = context.getSender();
             player.getCapability(FocusProvider.FOCUS).ifPresent(f ->
-                    f.setFocusing(focusing));
+                    f.setFocusPressed(focusing));
         });
         context.setPacketHandled(true);
     }

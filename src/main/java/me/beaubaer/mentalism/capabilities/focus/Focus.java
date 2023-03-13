@@ -13,25 +13,34 @@ import java.util.List;
 
 public class Focus implements IFocus
 {
-    protected float focus;
+    protected float focus = 0.0f;
 
-    // whether the player is attempting to focus via KeyMappings.FOCUS_KEY
-    protected boolean focusing;
+    // whether focus should tick up
+    protected boolean focusing = false;
 
     // whether the player can currently focus
-    protected boolean canFocus;
-    public static final float DEFAULT_FOCUS_TIME = 1.0f;
-    public static final float DEFAULT_FOCUS_DECAY_TIME = 1.0f;
-    protected float focusTime = 1.0f;
-    protected float focusDecayTime = 1.0f;
+    protected boolean canFocus = true;
+
+    // whether the player is attempting to focus via KeyMappings.FOCUS_KEY
+    protected boolean focusPressed = false;
+
+    // default times for focus to reach max and min value
+    // modified in special situations- if this is lowered, it is a major upgrade for the player
+    public float defaultFocusTime = 1.0f;
+    public float defaultFocusDecayTime = 1.0f;
+
+    // times in seconds determining how long it takes for focus to reach 1 from 0, or 0 from 1
+    protected float focusTime = defaultFocusTime;
+    protected float focusDecayTime = defaultFocusDecayTime;
+
+    // calculated rate values from focusTime and focusDecayTime, to be used every tick
+    protected float focusTickRate = 1/(focusTime*20);
+    protected float focusDecayRate = 1/(focusDecayTime*20);
     private ModifierPriorityMap modifiers;
 
     public Focus()
     {
-        this.focus = 0.0f;
-        focusing = false;
         modifiers = new ModifierPriorityMap();
-        canFocus = true;
     }
 
     public void setCanFocus(boolean canFocus)
@@ -49,9 +58,11 @@ public class Focus implements IFocus
 
     public void setFocusing(boolean focusing) { this.focusing = focusing && canFocus; }
 
-    public void interruptFocus()
+    // when set to false, the player must re-press the focus key to begin focusing again
+    public void setFocusPressed(boolean focusPressed)
     {
-        this.focusing = false;
+        this.focusPressed = focusPressed;
+        this.focusing = focusPressed && canFocus;
     }
 
     @Override
@@ -62,11 +73,28 @@ public class Focus implements IFocus
     public void setFocusTime(float timeToFull)
     {
         focusTime = timeToFull;
+        updateFocusTickRate();
+    }
+
+    private void updateFocusTickRate()
+    {
+        focusTickRate = 1/(focusTime*20);
     }
 
     public float getFocusTime()
     {
         return focusTime;
+    }
+
+    public void setFocusDecayTime(float timeToZero)
+    {
+        focusDecayTime = timeToZero;
+        updateFocusDecayRate();
+    }
+
+    private void updateFocusDecayRate()
+    {
+        focusDecayRate = 1/(focusDecayTime*20);
     }
 
     public float getFocusPower()
@@ -95,8 +123,12 @@ public class Focus implements IFocus
     {
         List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.ID.equals(ID)).toList();
 
+        if(modifiers.isEmpty())
+            throw new RuntimeException("getModifier called with a nonexistent ID!");
+
         if(modifiers.size() > 1)
         {
+            // normally, every modifier should have a unique ID
             throw new RuntimeException("ID " + ID + " has more than one associated modifier.");
         }
         else return modifiers.get(0);
@@ -129,11 +161,11 @@ public class Focus implements IFocus
 
         if(focusing && (focus < 1.0f))
         {
-            focus += 1/(focusTime*20);
+            focus += focusTickRate;
         }
         else if(!focusing && (focus > 0.0f))
         {
-            focus -= 1/(focusDecayTime*20);
+            focus -= focusDecayRate;
         }
 
         focus = Math.min(focus, 1.0f);
