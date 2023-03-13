@@ -121,7 +121,7 @@ public class ServerEvents
     {
         e.getPlayer().getCapability(FocusProvider.FOCUS).ifPresent(f ->
         {
-            f.interruptFocus();
+            f.setFocusPressed(false);
         });
     }
 }

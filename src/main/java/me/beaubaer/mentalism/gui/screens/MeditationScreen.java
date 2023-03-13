@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class MeditationScreen extends Screen
 {
     private int renderTicks = 0;
-    private float fadeInTime = 2.0f;
+    private final float fadeInTime = 2.0f;
     public MeditationScreen(Component title) {
         super(title);
     }
@@ -41,7 +41,7 @@ public class MeditationScreen extends Screen
     @Override
     public void renderBackground(@NotNull PoseStack pPoseStack, int pVOffset)
     {
-        int alpha= Math.round(255*renderTicks/(fadeInTime*20));
+        int alpha = Math.round(255*renderTicks/(fadeInTime*20));
 
         int screenColor = FastColor.ARGB32.color(alpha, 0, 0, 0);
 

@@ -12,8 +12,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.stream.Stream;
-
 @Mod.EventBusSubscriber(modid = Mentalism.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents
 {
@@ -28,7 +26,7 @@ public class ClientEvents
         Minecraft mc = Minecraft.getInstance();
 
         // make sure we're actually loaded into a world before we do anything with ticks
-        if(mc.player == null)
+        if (mc.player == null)
             return;
 
         boolean currentFKeyState = KeyMappings.FOCUS_KEY.isDown();
