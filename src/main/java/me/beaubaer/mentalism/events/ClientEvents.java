@@ -1,6 +1,7 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
+import me.beaubaer.mentalism.gui.radialmenu.RadialMenuOverlay;
 import me.beaubaer.mentalism.networking.FocusKeySyncC2SPacket;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.SetCanFocusC2SPacket;
@@ -60,6 +61,7 @@ public class ClientEvents
 
         if (currentFKeyState != previousFKeyState)
         {
+            RadialMenuOverlay.SPELL_MENU.setActive(currentFKeyState);
             MentalismMessages.sendToServer(new FocusKeySyncC2SPacket(currentFKeyState));
             previousFKeyState = currentFKeyState;
         }
