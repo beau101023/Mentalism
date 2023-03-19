@@ -38,6 +38,7 @@ public class GraphicsUtil
     public static void renderTextureOverlay(Matrix4f pMatrix, float pMinX, float pMinY, float pMaxX, float pMaxY, ResourceLocation pTextureLocation, float pAlpha) {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
+        RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, pAlpha);
@@ -53,6 +54,7 @@ public class GraphicsUtil
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
     }
 
     // angle clockwise from x hat to vec in radians
