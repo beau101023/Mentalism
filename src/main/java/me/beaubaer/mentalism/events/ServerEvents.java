@@ -4,6 +4,8 @@ import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.Focus;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.AntiDistraction;
+import me.beaubaer.mentalism.networking.FocusValueSyncS2CPacket;
+import me.beaubaer.mentalism.networking.MentalismMessages;
 import net.minecraft.Util;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -68,6 +70,8 @@ public class ServerEvents
         p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
         {
             f.updateFocus();
+
+            MentalismMessages.sendToPlayer(new FocusValueSyncS2CPacket(f.getFocusPower()), p);
 
             /*if(f.getFocusPower() > 1.1f)
             {

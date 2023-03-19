@@ -52,6 +52,12 @@ public class MentalismMessages
             .encoder(SetCanFocusC2SPacket::toBytes)
             .consumer(SetCanFocusC2SPacket::handle)
             .add();
+
+    net.messageBuilder(FocusValueSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(FocusValueSyncS2CPacket::new)
+            .encoder(FocusValueSyncS2CPacket::toBytes)
+            .consumer(FocusValueSyncS2CPacket::handle)
+            .add();
 }
 
     public static <MSG> void sendToServer(MSG message) {
