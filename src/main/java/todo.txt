@@ -6,6 +6,16 @@ Make a simple 'interruptFocusC2S' packet and a focus interruption method in Focu
 
 Implement hasModifier on Focus to check for duplicate modifier applications (to reproduce, spam click bell)
 
+Spell ideas:
+Air walk
+Block break distance
+Transmutation
+
+Progression systems:
+Distraction resistance types
+Spells unlock when you focus up to a certain level while performing a certain action
+Focuslevel increases
+
 Early progression is only touch spells (within interaction range)
 Higher focus level eventually makes it so the player can keep their eyes open while focusing
 Mid-progression gives projectiles
