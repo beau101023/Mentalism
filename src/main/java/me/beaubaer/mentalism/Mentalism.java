@@ -23,7 +23,7 @@ public class Mentalism
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
-        LOGGER.info("HELLO FROM MENTALISM");
+        LOGGER.info("TIME TO GET MENTAL");
 
         event.enqueueWork(() ->
                 MentalismMessages.register());
