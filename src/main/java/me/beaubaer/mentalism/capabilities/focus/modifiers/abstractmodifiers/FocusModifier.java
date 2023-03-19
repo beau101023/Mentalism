@@ -8,7 +8,7 @@ public abstract class FocusModifier
 {
     public int priority;
 
-    public String ID;
+    protected String ID;
     protected Focus parent;
 
     public FocusModifier(Focus parent, CompoundTag tag)
@@ -25,6 +25,11 @@ public abstract class FocusModifier
     }
 
     public abstract float apply(float initialValue);
+
+    public String getID()
+    {
+        return this.ID;
+    }
 
     public void saveNBTData(ListTag nbt) {}
 

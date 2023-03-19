@@ -111,7 +111,7 @@ public class Focus implements IFocus
 
     public boolean hasModifier(String ID)
     {
-        return getModifiers().stream().anyMatch(modifier -> modifier.ID.equals(ID));
+        return getModifiers().stream().anyMatch(modifier -> modifier.getID().equals(ID));
     }
 
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
@@ -121,7 +121,7 @@ public class Focus implements IFocus
 
     public FocusModifier getModifier(String ID)
     {
-        List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.ID.equals(ID)).toList();
+        List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.getID().equals(ID)).toList();
 
         if(modifiers.isEmpty())
             throw new RuntimeException("getModifier called with a nonexistent ID!");
@@ -228,7 +228,7 @@ public class Focus implements IFocus
     private FocusModifier loadModifier(CompoundTag nbt)
     {
         String className = nbt.getString("type");
-        Class c;
+        Class<?> c;
         try
         {
             c = Class.forName(className);
