@@ -1,6 +1,4 @@
 Utility emphasis
-Make focusmodifiers all have a typeID!
-(https://stackoverflow.com/questions/15015771/how-to-force-subclasses-to-set-a-variable-in-java)
 
 Make a simple 'interruptFocusC2S' packet and a focus interruption method in Focus
 
