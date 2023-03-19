@@ -55,15 +55,15 @@ public class GraphicsUtil
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    // angle from x hat to vec in radians
-    private static float angleFromX(Vector3f vec)
+    // angle clockwise from x hat to vec in radians
+    public static float angleFromXHat2D(float x, float y)
     {
-        return (float) Math.acos(vec.x() / magnitude(vec));
+        return (float) ( Math.atan2(-y, -x) + Math.PI );
     }
 
-    private static float magnitude(Vector3f vec)
+    public static float magnitude2D(float x, float y)
     {
-        return (float) Math.sqrt(Math.pow(vec.x(), 2) + Math.pow(vec.y(), 2) + Math.pow(vec.z(), 2));
+        return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
     private static void innerFill(Matrix4f pMatrix, float pMinX, float pMinY, float pMaxX, float pMaxY, int pColor)
