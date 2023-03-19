@@ -4,8 +4,10 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import me.beaubaer.mentalism.clientdata.FocusData;
 import me.beaubaer.mentalism.gui.GraphicsUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,10 +20,21 @@ public class RadialMenuOverlay implements IIngameOverlay
 {
     public static RadialMenuOverlay SPELL_MENU = new RadialMenuOverlay();
     boolean active = false;
-    int numSegments = 1;
-    int timer = 0;
+    int numSegments = 40;
+    int selectedSegment = -1;
 
-    ResourceLocation circle = new ResourceLocation("mentalism", "tex/circle.png");
+    // used for fading the menu in and out
+    float menuAlpha = 0f;
+
+    float menuOuterRadius = 0f;
+    float menuInnerRadius = 0f;
+
+    static ResourceLocation magicCircle = new ResourceLocation("mentalism", "tex/magic_circle.png");
+    static ResourceLocation circle = new ResourceLocation("mentalism", "tex/circle.png");
+    static ResourceLocation circleThicc = new ResourceLocation("mentalism", "tex/circle_thicc.png");
+
+    Minecraft mc = Minecraft.getInstance();
+    MouseHandler mouse = Minecraft.getInstance().mouseHandler;
 
     public RadialMenuOverlay()
     {
@@ -31,49 +44,92 @@ public class RadialMenuOverlay implements IIngameOverlay
     @Override
     public void render(ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height)
     {
-        if(!active)
-            return;
-
         // rendering
         // REFERENCE GuiComponent.innerFill for how to do some render calls
         // REFERENCE Gui.renderTextureOverlay
+        updateMenuAlpha();
+
+        if(menuAlpha == 0)
+            return;
 
         Matrix4f pose = poseStack.last().pose().copy();
 
-        GraphicsUtil.renderTextureOverlay(pose, (width/2)-(height/2), 0, (width/2)+(height/2), height, circle, 0.25f);
+        updateMenuRadius(height);
+        renderBackground(pose, width, height);
 
-        renderSegmentSeparators(pose, numSegments, 50f, (height/2)*0.75f, width/2, height/2);
-
-        if(timer == 39)
-        {
-            numSegments = (numSegments % 15) + 1;
-        }
-        timer = (timer +1) % 40;
+        updateSelectedSegment(width, height);
+        renderSelectionIndicator(pose, width, height);
     }
 
-    private void renderSegmentSeparators(Matrix4f pose, int segAmount, float innerRadius, float outerRadius, float centerX, float centerY)
+    private void updateMenuAlpha()
     {
-        int color = FastColor.ARGB32.color(255, 255, 255, 255);
-        for(float i = 0; i<(2*Math.PI); i+= (2*Math.PI)/segAmount)
+        menuAlpha = Math.min(FocusData.localFocus, 1.0f);
+    }
+
+    private void updateSelectedSegment(int width, int height)
+    {
+        float mouseXScreen = (float) mouse.xpos() * (float)mc.getWindow().getGuiScaledWidth() / (float)mc.getWindow().getScreenWidth();
+        float mouseYScreen = (float) mouse.ypos() * (float)mc.getWindow().getGuiScaledWidth() / (float)mc.getWindow().getScreenWidth();
+
+        float mouseXRelToCenter = mouseXScreen-(width /2);
+        float mouseYRelToCenter = mouseYScreen-(height /2);
+
+        float distFromCenter = GraphicsUtil.magnitude2D(mouseXRelToCenter, mouseYRelToCenter);
+        float angleFromXHat = GraphicsUtil.angleFromXHat2D(mouseXRelToCenter, mouseYRelToCenter);
+
+        if(distFromCenter < menuOuterRadius)
         {
-            float length = outerRadius-innerRadius;
-
-            Matrix4f linePose = pose.copy();
-
-            // translate line to the center
-            linePose.translate(new Vector3f(centerX, centerY, 0));
-
-            // rotate line
-            Quaternion lineRot = Quaternion.fromXYZ(0, 0, i);
-            linePose.multiply(lineRot);
-
-            // offset line from the center
-            Matrix4f translator = Matrix4f.createTranslateMatrix(innerRadius, 0, 0);
-            linePose.multiply(translator);
-
-            GraphicsUtil.line(linePose, 1, 0, 0, 0f, length, color);
-
+            float segmentWidth = (float) (2 * Math.PI) / numSegments;
+            selectedSegment = (int) Math.floor(angleFromXHat / segmentWidth);
         }
+        else
+            selectedSegment = -1;
+    }
+
+    private void updateMenuRadius(int height)
+    {
+        menuOuterRadius = (height /2f)*0.75f;
+        menuInnerRadius = (height /2f)*0.4f;
+    }
+
+    private void renderBackground(Matrix4f pose, int width, int height)
+    {
+
+        GraphicsUtil.renderSquareTextureOverlay(pose, height/2f, width/2f, height/2f, magicCircle, 0.3f* menuAlpha);
+
+        if(numSegments > 1)
+        {
+            int color = FastColor.ARGB32.color((int) (0.5*255* menuAlpha), 255, 255, 255);
+            GraphicsUtil.renderRadialSeparators(pose, numSegments, (height/2f) * 0.40f, (height/2f) * 0.75f, width/2f, height/2f, color);
+        }
+
+        // big circles
+        GraphicsUtil.renderSquareTextureOverlay(pose, (height/2f)*0.75f, width/2f, height/2f, circle, 0.5f* menuAlpha);
+        GraphicsUtil.renderSquareTextureOverlay(pose, (height/2f)*0.40f, width/2f, height/2f, circle, 0.5f* menuAlpha);
+    }
+
+    private void renderSelectionIndicator(Matrix4f pose, int width, int height)
+    {
+        if(selectedSegment > -1 && selectedSegment < numSegments)
+        {
+            // little selection circle
+            Matrix4f selectionPose = getPoseForSelection(pose, width / 2, height / 2, (menuOuterRadius+menuInnerRadius)/2, selectedSegment, numSegments);
+            GraphicsUtil.renderSquareTextureOverlay(selectionPose, 50f / numSegments, 0, 0, magicCircle, 0.75f * menuAlpha);
+        }
+    }
+
+    private Matrix4f getPoseForSelection(Matrix4f inPose, int centerX, int centerY, float radius, int selectedSegment, int numSegments)
+    {
+        Matrix4f selectedPose = inPose.copy();
+        selectedPose.translate(new Vector3f(centerX, centerY, 0));
+
+        // angle to the middle of the selected 'pie slice'
+        float selectionAngle = 2*(float)Math.PI * (2*selectedSegment + 1) / (2*numSegments);
+        selectedPose.multiply(Quaternion.fromXYZ(0, 0, selectionAngle));
+        selectedPose.multiply(Matrix4f.createTranslateMatrix(radius, 0f, 0f));
+        selectedPose.multiply(Quaternion.fromXYZ(0, 0, -selectionAngle));
+
+        return selectedPose;
     }
 
     public void setActive(boolean active)
@@ -83,11 +139,11 @@ public class RadialMenuOverlay implements IIngameOverlay
 
         if(active)
         {
-            Minecraft.getInstance().mouseHandler.releaseMouse();
+            mouse.releaseMouse();
         }
         else
         {
-            Minecraft.getInstance().mouseHandler.grabMouse();
+            mouse.grabMouse();
         }
 
         this.active = active;
