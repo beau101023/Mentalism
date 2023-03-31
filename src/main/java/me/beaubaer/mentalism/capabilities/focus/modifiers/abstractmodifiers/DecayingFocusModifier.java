@@ -6,23 +6,23 @@ public abstract class DecayingFocusModifier extends TickingFocusModifier
 {
     protected float maxAmount;
     protected float amount;
-    protected float decayTime;
+    protected float duration;
     protected float tickDecayRate;
 
-    public DecayingFocusModifier(Focus parent, int priority, float amount, float decayTime, String ID)
+    public DecayingFocusModifier(Focus parent, int priority, float amount, float duration, String ID)
     {
         super(parent, priority, ID);
 
         this.maxAmount = amount;
         this.amount = amount;
-        this.decayTime = decayTime;
+        this.duration = duration;
 
         updateTickDecayAmount();
     }
 
     private void updateTickDecayAmount()
     {
-        tickDecayRate = maxAmount/(decayTime*20);
+        tickDecayRate = maxAmount/(duration *20);
     }
 
     @Override
@@ -41,18 +41,20 @@ public abstract class DecayingFocusModifier extends TickingFocusModifier
         }
     }
 
-    public void setDecayTime(float decayTime)
+    public void setDuration(float decayTime)
     {
-        this.decayTime = decayTime;
+        this.duration = decayTime;
         updateTickDecayAmount();
     }
 
-    public float getDecayTime()
+    public float getDuration()
     {
-        return this.decayTime;
+        return this.duration;
     }
 
     public float getAmount() { return this.amount; }
+
+    public void setAmount(float amount) { this.amount = amount; }
 
     public float getTickDecayRate() { return this.tickDecayRate; }
 }

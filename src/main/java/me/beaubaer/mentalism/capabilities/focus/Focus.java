@@ -1,11 +1,16 @@
 package me.beaubaer.mentalism.capabilities.focus;
 
+import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.TickingFocusModifier;
 import me.beaubaer.mentalism.datastructures.ModifierPriorityMap;
+import me.beaubaer.mentalism.networking.S2C.FocusValueSyncS2CPacket;
+import me.beaubaer.mentalism.networking.MentalismMessages;
+import me.beaubaer.mentalism.util.MentalMath;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -34,12 +39,14 @@ public class Focus implements IFocus
     protected float focusDecayTime = defaultFocusDecayTime;
 
     // calculated rate values from focusTime and focusDecayTime, to be used every tick
-    protected float focusTickRate = 1/(focusTime*20);
-    protected float focusDecayRate = 1/(focusDecayTime*20);
+    protected float focusTickIncrement;
+    protected float focusDecayIncrement;
     private ModifierPriorityMap modifiers;
 
     public Focus()
     {
+        updateFocusTickIncrement();
+        updateFocusDecayIncrement();
         modifiers = new ModifierPriorityMap();
     }
 
@@ -73,12 +80,12 @@ public class Focus implements IFocus
     public void setFocusTime(float timeToFull)
     {
         focusTime = timeToFull;
-        updateFocusTickRate();
+        updateFocusTickIncrement();
     }
 
-    private void updateFocusTickRate()
+    private void updateFocusTickIncrement()
     {
-        focusTickRate = 1/(focusTime*20);
+        focusTickIncrement = MentalMath.secondsToTickIncrements(focusTime);
     }
 
     public float getFocusTime()
@@ -89,12 +96,12 @@ public class Focus implements IFocus
     public void setFocusDecayTime(float timeToZero)
     {
         focusDecayTime = timeToZero;
-        updateFocusDecayRate();
+        updateFocusDecayIncrement();
     }
 
-    private void updateFocusDecayRate()
+    private void updateFocusDecayIncrement()
     {
-        focusDecayRate = 1/(focusDecayTime*20);
+        focusDecayIncrement = MentalMath.secondsToTickIncrements(focusDecayTime);
     }
 
     public float getFocusPower()
@@ -119,7 +126,7 @@ public class Focus implements IFocus
         return modifiers.collectType(modifierType);
     }
 
-    public FocusModifier getModifier(String ID)
+    public <T extends FocusModifier> T getModifier(String ID, Class<T> type)
     {
         List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.getID().equals(ID)).toList();
 
@@ -131,7 +138,7 @@ public class Focus implements IFocus
             // normally, every modifier should have a unique ID
             throw new RuntimeException("ID " + ID + " has more than one associated modifier.");
         }
-        else return modifiers.get(0);
+        else return type.cast(modifiers.get(0));
     }
 
     public ArrayList<FocusModifier> getModifiers()
@@ -141,6 +148,9 @@ public class Focus implements IFocus
 
     public void putModifier(FocusModifier fm)
     {
+        if(this.hasModifier(fm.getID()))
+            throw new RuntimeException("putModifier called with an ID that already exists: " + fm.getID());
+
         modifiers.put(fm);
     }
 
@@ -150,7 +160,7 @@ public class Focus implements IFocus
     }
 
     // should be called every player tick
-    public void updateFocus()
+    public void update()
     {
         updateModifiers();
 
@@ -161,11 +171,11 @@ public class Focus implements IFocus
 
         if(focusing && (focus < 1.0f))
         {
-            focus += focusTickRate;
+            focus += focusTickIncrement;
         }
         else if(!focusing && (focus > 0.0f))
         {
-            focus -= focusDecayRate;
+            focus -= focusDecayIncrement;
         }
 
         focus = Math.min(focus, 1.0f);
@@ -246,5 +256,10 @@ public class Focus implements IFocus
         }
 
         return fm;
+    }
+
+    public void sync(ServerPlayer p)
+    {
+        MentalismMessages.sendToPlayer(new FocusValueSyncS2CPacket(getFocusPower()), p);
     }
 }

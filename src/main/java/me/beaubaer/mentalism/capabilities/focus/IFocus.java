@@ -9,5 +9,5 @@ public interface IFocus
     float getFocusPower();
 
     // should be called every player tick
-    void updateFocus();
+    void update();
 }

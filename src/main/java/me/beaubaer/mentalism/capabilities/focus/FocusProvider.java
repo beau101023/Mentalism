@@ -16,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 public class FocusProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
     public static Capability<Focus> FOCUS = CapabilityManager.get(new CapabilityToken<>() {});
-
     private Focus focus = null;
     private final LazyOptional<Focus> optional = LazyOptional.of(this::createFocus);
 
@@ -30,6 +29,7 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
 
         return this.focus;
     }
+
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
