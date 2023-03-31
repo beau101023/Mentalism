@@ -115,11 +115,8 @@ public class ServerEvents
     @SubscribeEvent
     public static void entitySoundPlayed(PlaySoundAtEntityEvent e)
     {
-        // if e.getEntity() isn't a ServerPlayer, return
-        if(!(e.getEntity() instanceof ServerPlayer))
+        if(!(e.getEntity() instanceof ServerPlayer p))
             return;
-
-        ServerPlayer p = (ServerPlayer) e.getEntity();
 
         p.sendMessage(new TextComponent("Sound played: " + e.getSound().getLocation() ), p.getUUID());
 
