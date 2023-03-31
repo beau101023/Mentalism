@@ -1,8 +1,13 @@
 Utility emphasis
 
-Make a simple 'interruptFocusC2S' packet and a focus interruption method in Focus
+- Make 'focus bar' of some kind
+- Implement distraction resistances
+- Moar spells
+- add biden blast sound effect
 
-Implement hasModifier on Focus to check for duplicate modifier applications (to reproduce, spam click bell)
+x Implement unlock system
+x Make seeing while casting unlockable
+x Implement hasModifier on Focus to check for duplicate modifier applications
 
 Spell ideas:
 Air walk
