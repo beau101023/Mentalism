@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.networking;
+package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import net.minecraft.network.FriendlyByteBuf;

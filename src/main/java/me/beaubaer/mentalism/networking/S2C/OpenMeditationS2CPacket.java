@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.networking;
+package me.beaubaer.mentalism.networking.S2C;
 
 import me.beaubaer.mentalism.gui.screens.MeditationScreen;
 import net.minecraft.client.Minecraft;

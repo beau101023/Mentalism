@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.networking;
+package me.beaubaer.mentalism.networking.S2C;
 
 import me.beaubaer.mentalism.clientdata.FocusData;
 import net.minecraft.network.FriendlyByteBuf;

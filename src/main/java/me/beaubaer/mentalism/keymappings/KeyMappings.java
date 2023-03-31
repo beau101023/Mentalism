@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.util;
+package me.beaubaer.mentalism.keymappings;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
