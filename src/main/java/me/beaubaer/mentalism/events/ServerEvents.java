@@ -89,6 +89,9 @@ public class ServerEvents
                 p.sendMessage(new TextComponent("Bell decayRate: " + bellAD.getTickDecayRate()), Util.NIL_UUID);
             }
         });
+
+        p.getCapability(SpellManagerProvider.SPELL_MANAGER).ifPresent(sm ->
+                sm.update(p));
     }
 
     @SubscribeEvent

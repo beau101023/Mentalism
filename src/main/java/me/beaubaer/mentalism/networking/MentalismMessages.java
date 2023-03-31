@@ -1,6 +1,8 @@
 package me.beaubaer.mentalism.networking;
 
 import me.beaubaer.mentalism.Mentalism;
+import me.beaubaer.mentalism.networking.C2S.*;
+import me.beaubaer.mentalism.networking.S2C.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -57,6 +59,36 @@ public class MentalismMessages
             .decoder(FocusValueSyncS2CPacket::new)
             .encoder(FocusValueSyncS2CPacket::toBytes)
             .consumer(FocusValueSyncS2CPacket::handle)
+            .add();
+
+    net.messageBuilder(AvailableSpellsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(AvailableSpellsSyncS2CPacket::new)
+            .encoder(AvailableSpellsSyncS2CPacket::toBytes)
+            .consumer(AvailableSpellsSyncS2CPacket::handle)
+            .add();
+
+    net.messageBuilder(CanCastSpellsSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(CanCastSpellsSyncS2CPacket::new)
+            .encoder(CanCastSpellsSyncS2CPacket::toBytes)
+            .consumer(CanCastSpellsSyncS2CPacket::handle)
+            .add();
+
+    net.messageBuilder(SpellProgressSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(SpellProgressSyncS2CPacket::new)
+            .encoder(SpellProgressSyncS2CPacket::toBytes)
+            .consumer(SpellProgressSyncS2CPacket::handle)
+            .add();
+
+    net.messageBuilder(SelectedSpellSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(SelectedSpellSyncC2SPacket::new)
+            .encoder(SelectedSpellSyncC2SPacket::toBytes)
+            .consumer(SelectedSpellSyncC2SPacket::handle)
+            .add();
+
+    net.messageBuilder(CastingStateSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(CastingStateSyncC2SPacket::new)
+            .encoder(CastingStateSyncC2SPacket::toBytes)
+            .consumer(CastingStateSyncC2SPacket::handle)
             .add();
 }
 
