@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class Mentalism
 {
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "mentalism";
 
     public Mentalism()

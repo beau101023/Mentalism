@@ -2,11 +2,8 @@ package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.gui.radialmenu.RadialMenu;
-import me.beaubaer.mentalism.networking.C2S.CastingStateSyncC2SPacket;
-import me.beaubaer.mentalism.networking.C2S.FocusKeySyncC2SPacket;
+import me.beaubaer.mentalism.networking.C2S.*;
 import me.beaubaer.mentalism.networking.MentalismMessages;
-import me.beaubaer.mentalism.networking.C2S.SetCanFocusC2SPacket;
-import me.beaubaer.mentalism.networking.C2S.SetFocusTimeC2SPacket;
 import me.beaubaer.mentalism.keymappings.KeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -72,7 +69,7 @@ public class ClientEvents
                 // increment the number of presses
                 numFPresses++;
 
-                // check for a doubleclick
+                // check for a double click
                 if (numFPresses == 2)
                 {
                     // if we've doubleclicked, reset the tick counter and number of presses

@@ -32,7 +32,7 @@ public class PlayerLookingAtPickableCondition implements ConditionCheckStrategy
     {
         HitResult res = p.pick(checkDistance, 0, false);
 
-        if(res == null || res.getType() == HitResult.Type.MISS)
+        if(res.getType() == HitResult.Type.MISS)
         {
             return false;
         }
@@ -46,20 +46,13 @@ public class PlayerLookingAtPickableCondition implements ConditionCheckStrategy
             }
             else
             {
-                boolean isTargetBlock = targetBlocks.stream().anyMatch(b -> p.level.getBlockState(blockRes.getBlockPos()).is(b));
-                return isTargetBlock;
+                return targetBlocks.stream().anyMatch(b -> p.level.getBlockState(blockRes.getBlockPos()).is(b));
             }
         }
         if(res instanceof EntityHitResult)
         {
-            if(targetEntities == null)
-            {
-                return hitsAllEntities;
-            }
-            else if(targetEntities.contains(((EntityHitResult) res).getEntity().getType()))
-            {
-                return true;
-            }
+            if(targetEntities == null) return hitsAllEntities;
+            else return targetEntities.contains(((EntityHitResult) res).getEntity().getType());
         }
 
         return false;
