@@ -1,10 +1,10 @@
 package me.beaubaer.mentalism.capabilities.spellmanager;
 
-import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.networking.S2C.AvailableSpellsSyncS2CPacket;
 import me.beaubaer.mentalism.networking.S2C.CanCastSpellsSyncS2CPacket;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.S2C.SpellProgressSyncS2CPacket;
+import me.beaubaer.mentalism.registries.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -54,7 +54,7 @@ public class SpellManager
             return;
         }
 
-        for (Spell sp : Mentalism.SPELLS.get().getValues())
+        for (Spell sp : SpellRegistry.SPELLS.get().getValues())
         {
             if (sp.getSpellNum() == spellNum)
             {
@@ -75,7 +75,7 @@ public class SpellManager
     {
         List<Integer> spellNums = new ArrayList<>();
 
-        for (Spell sp : Mentalism.SPELLS.get().getValues())
+        for (Spell sp : SpellRegistry.SPELLS.get().getValues())
         {
             if (sp.canCast(p))
             {
@@ -90,7 +90,7 @@ public class SpellManager
     {
         availableSpells.clear();
 
-        for (Spell sp : Mentalism.SPELLS.get().getValues())
+        for (Spell sp : SpellRegistry.SPELLS.get().getValues())
         {
             if (sp.available(p))
             {

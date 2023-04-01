@@ -11,6 +11,7 @@ import me.beaubaer.mentalism.clientdata.UnlockData;
 import me.beaubaer.mentalism.gui.GraphicsUtil;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.C2S.SelectedSpellSyncC2SPacket;
+import me.beaubaer.mentalism.registries.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -213,7 +214,7 @@ public class RadialMenu implements IIngameOverlay
     {
         int currentSegment = 0;
 
-        for(Spell sp : Mentalism.SPELLS.get().getValues())
+        for(Spell sp : SpellRegistry.SPELLS.get().getValues())
         {
             if(SpellCastData.availableNums.contains(sp.getSpellNum()))
             {

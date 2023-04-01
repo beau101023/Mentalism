@@ -10,6 +10,6 @@ import java.util.List;
 public class SpellCastData
 {
     public static float localSpellProgress = 0f;
-    public static List<Integer> availableNums = new ArrayList();
-    public static List<Integer> canCastNums = new ArrayList();
+    public static List<Integer> availableNums = new ArrayList<>();
+    public static List<Integer> canCastNums = new ArrayList<>();
 }

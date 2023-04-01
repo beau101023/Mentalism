@@ -7,7 +7,6 @@ import me.beaubaer.mentalism.spells.Spell;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import org.slf4j.Logger;
 
@@ -20,14 +19,13 @@ public class Mentalism
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "mentalism";
-    public static Supplier<IForgeRegistry<Spell>> SPELLS;
 
     public Mentalism()
     {
         // Register the setup method for mod loading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-        SPELLS = SpellRegistry.SPELLS_DEFERRED.makeRegistry(Spell.class, RegistryBuilder::new);
+        SpellRegistry.SPELLS = SpellRegistry.SPELLS_DEFERRED.makeRegistry(Spell.class, RegistryBuilder::new);
         SpellRegistry.SPELLS_DEFERRED.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
