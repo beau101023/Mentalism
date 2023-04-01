@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -58,42 +59,37 @@ public class RadialMenu implements IIngameOverlay
     @Override
     public void render(ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height)
     {
-        // rendering
-        // REFERENCE GuiComponent.innerFill for how to do some render calls
-        // REFERENCE Gui.renderTextureOverlay
+        // logic
+        if(active)
+        {
+            updateNumSegments();
+            updateSelectedSegment(width, height);
+            syncSelectionToServer();
+        }
 
         float renderFadeTarget = updateRenderFadeTarget();
         updateRenderFade(renderFadeTarget);
 
+        // rendering
         updateMenuAlpha();
 
         if(menuAlpha == 0f)
             return;
 
-        updateNumSegments();
-
-        if(active)
-            updateSelectedSegment(width, height);
-
         updateIconSize();
         updateMenuRadius(height);
-
-        syncSelectionToServer();
-
-        // only draw menu if player hasn't doubleclicked
 
         Matrix4f pose = poseStack.last().pose().copy();
 
         renderHyperfocusedDarkness(pose, width, height);
-
-        renderBackground(pose, width, height);
+        renderMagicMenuLayout(pose, width, height);
 
         renderSpellIcons(pose, width, height);
 
         if(!active)
             return;
         // selected segment highlight
-        renderSegmentIcon(pose, width, height, magicCircle, selectedSegment, 0.75f * SpellCastData.localSpellProgress);
+        renderSegmentIcon(pose, width, height, magicCircle, selectedSegment, 0.75f * menuAlpha);
     }
 
     private float updateRenderFadeTarget()
@@ -112,6 +108,8 @@ public class RadialMenu implements IIngameOverlay
 
     private void updateRenderFade(float target)
     {
+        // move renderFade towards target with a logarithmic function
+        // this makes the fade-in and fade-out look smoother since target is updated in discrete steps.
         if(renderFade != target)
         {
             if(target - renderFade >= 0)
@@ -164,8 +162,8 @@ public class RadialMenu implements IIngameOverlay
         float mouseXScreen = (float) mouse.xpos() * (float)mc.getWindow().getGuiScaledWidth() / (float)mc.getWindow().getScreenWidth();
         float mouseYScreen = (float) mouse.ypos() * (float)mc.getWindow().getGuiScaledWidth() / (float)mc.getWindow().getScreenWidth();
 
-        float mouseXRelToCenter = mouseXScreen-(width /2);
-        float mouseYRelToCenter = mouseYScreen-(height /2);
+        float mouseXRelToCenter = mouseXScreen-(width /2f);
+        float mouseYRelToCenter = mouseYScreen-(height /2f);
 
         float distFromCenter = GraphicsUtil.magnitude2D(mouseXRelToCenter, mouseYRelToCenter);
         float angleFromXHat = GraphicsUtil.angleFromXHat2D(mouseXRelToCenter, mouseYRelToCenter);
@@ -180,12 +178,12 @@ public class RadialMenu implements IIngameOverlay
 
     private void updateMenuRadius(int height)
     {
-        backgroundRadius = (height/2f)*Math.min(renderFade+0.3f, 1.0f);
-        menuOuterRadius = (height /2f)*0.75f*Math.min(renderFade+0.3f, 1.0f);
-        menuInnerRadius = (height /2f)*0.4f*Math.min(renderFade+0.3f, 1.0f);
+        backgroundRadius = (height/2f) * Mth.map(renderFade, 0.0f, 1.0f, 0.3f, 1.0f);
+        menuOuterRadius = backgroundRadius*0.75f;
+        menuInnerRadius = backgroundRadius*0.4f;
     }
 
-    private void renderBackground(Matrix4f pose, int width, int height)
+    private void renderMagicMenuLayout(Matrix4f pose, int width, int height)
     {
         // big background overlay circle
         GraphicsUtil.renderSquareTextureOverlay(pose, backgroundRadius, width/2f, height/2f, magicCircle, 0.3f* menuAlpha);
