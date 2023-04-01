@@ -3,7 +3,6 @@ package me.beaubaer.mentalism.events;
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.IFocus;
-import me.beaubaer.mentalism.capabilities.focus.modifiers.AntiDistraction;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManager;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
@@ -13,15 +12,12 @@ import me.beaubaer.mentalism.registries.SpellRegistry;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -55,8 +51,14 @@ public class ServerEvents
     {
         if(e.isWasDeath())
         {
+            // focus should be copied to new player
             e.getOriginal().getCapability(FocusProvider.FOCUS).ifPresent(oldStore ->
                     e.getPlayer().getCapability(FocusProvider.FOCUS).ifPresent(newStore ->
+                            newStore.copyFrom(oldStore)));
+
+            // unlock state should be copied to new player as well
+            e.getOriginal().getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(oldStore ->
+                    e.getPlayer().getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(newStore ->
                             newStore.copyFrom(oldStore)));
         }
     }
