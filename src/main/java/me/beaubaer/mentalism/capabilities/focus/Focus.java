@@ -33,12 +33,12 @@ public class Focus implements IFocus
 
     // default times for focus to reach max and min value
     // modified in special situations- if this is lowered, it is a major upgrade for the player
-    public final float defaultFocusTime = 1.0f;
-    public final float defaultFocusDecayTime = 1.0f;
+    public static final float defaultFocusTime = 0.4f;
+    public static final float defaultSlowedFocusTime = 2.0f;
 
     // times in seconds determining how long it takes for focus to reach 1 from 0, or 0 from 1
     protected float focusTime = defaultFocusTime;
-    protected float focusDecayTime = defaultFocusDecayTime;
+    protected float focusDecayTime = defaultFocusTime;
 
     // calculated rate values from focusTime and focusDecayTime, to be used every tick
     protected float focusTickIncrement;

@@ -1,6 +1,7 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
+import me.beaubaer.mentalism.capabilities.focus.Focus;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
@@ -45,12 +46,12 @@ public class SituationalMalusEvents
 
             if (standingStill)
             {
-                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(1.0f));
+                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(Focus.defaultFocusTime));
                 MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));
             }
             else if (slowWalking)
             {
-                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(10.0f));
+                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(Focus.defaultSlowedFocusTime));
                 MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));
             }
             else
