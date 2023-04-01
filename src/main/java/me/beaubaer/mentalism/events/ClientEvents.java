@@ -41,8 +41,6 @@ public class ClientEvents
         if (mc.player == null)
             return;
 
-        updateMovementState(mc);
-
         handleFKeyStates();
     }
 
@@ -124,38 +122,6 @@ public class ClientEvents
                 numFPresses = 0;
                 tickCounter = 0;
             }
-        }
-    }
-
-    private static void updateMovementState(Minecraft mc)
-    {
-        boolean moving = mc.options.keyLeft.isDown() || mc.options.keyRight.isDown() || mc.options.keyUp.isDown() || mc.options.keyDown.isDown();
-
-        boolean crouching = mc.options.keyShift.isDown();
-
-        // make sure to only update the server when changes are detected
-        if (moving != previousMoving || crouching != previousCrouching)
-        {
-            if (!moving)
-            {
-                // here we are standing still, so we can focus
-                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(1.0f));
-                MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));
-            }
-            else if (crouching)
-            {
-                // here we are crouching and not moving, so we are standing still
-                MentalismMessages.sendToServer(new SetFocusTimeC2SPacket(10.0f));
-                MentalismMessages.sendToServer(new SetCanFocusC2SPacket(true));
-            }
-            else
-            {
-                // here we are not crouching or standing still, so we are walking normally or sprinting
-                // player shouldn't be able to focus here
-                MentalismMessages.sendToServer(new SetCanFocusC2SPacket(false));
-            }
-            previousMoving = moving;
-            previousCrouching = crouching;
         }
     }
 }
