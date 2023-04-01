@@ -2,6 +2,11 @@ package me.beaubaer.mentalism.capabilities.unlocks;
 
 import me.beaubaer.mentalism.registries.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +14,7 @@ import java.util.List;
 public class UnlockState
 {
     // list of unlocked spells
-    List<Spell> unlockedSpells = new ArrayList<>();
+    final List<Spell> unlockedSpells = new ArrayList<>();
 
     public UnlockState()
     {
@@ -40,5 +45,38 @@ public class UnlockState
     public void unlock(Spell s)
     {
         unlockedSpells.add(s);
+    }
+
+    public void copyFrom(UnlockState oldStore)
+    {
+        unlockedSpells.clear();
+        unlockedSpells.addAll(oldStore.unlockedSpells);
+    }
+
+    public void saveNBTData(CompoundTag nbt)
+    {
+        ListTag spellListTag = new ListTag();
+
+        for (Spell spell : unlockedSpells)
+        {
+            CompoundTag spellTag = new CompoundTag();
+            spellTag.putString("spell", spell.getRegistryName().toString());
+            spellListTag.add(spellTag);
+        }
+
+        nbt.put("spells", spellListTag);
+    }
+
+    public void loadNBTData(CompoundTag nbt)
+    {
+        ListTag spellListTag = nbt.getList("spells", 10);
+
+        for (Tag tag : spellListTag)
+        {
+            CompoundTag spellTag = (CompoundTag) tag;
+            IForgeRegistry<Spell> spellRegistry = SpellRegistry.SPELLS.get();
+
+            Spell spell = spellRegistry.getValue(new ResourceLocation(spellTag.getString("spell")));
+        }
     }
 }
