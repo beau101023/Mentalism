@@ -84,6 +84,12 @@ public class MentalismMessages
             .encoder(CastingStateSyncC2SPacket::toBytes)
             .consumer(CastingStateSyncC2SPacket::handle)
             .add();
+
+    net.messageBuilder(SoundDistractionC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+            .decoder(SoundDistractionC2SPacket::new)
+            .encoder(SoundDistractionC2SPacket::toBytes)
+            .consumer(SoundDistractionC2SPacket::handle)
+            .add();
 }
 
     public static <MSG> void sendToServer(MSG message) {

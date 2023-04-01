@@ -85,12 +85,11 @@ public class ServerEvents
             f.update();
             f.sync(p);
 
-            // see number of modifiers
-            p.sendMessage(new TextComponent("Number of modifiers: " + f.getModifiers().size() ), p.getUUID());
-
             // see sound distraction amount
-            if(f.hasModifier(Distraction.SOUND_DISTRACTION))
-                p.sendMessage(new TextComponent("Sound distraction amount: " + f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).getAmount() ), p.getUUID());
+            f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).ifPresent(distraction ->
+            {
+                p.sendMessage(new TextComponent("Sound distraction amount: " + distraction.getAmount()), p.getUUID());
+            });
 
             // if we go over 1.0 focus power, unlock shootArrow spell
             if(f.getFocusPower() > 1.0f)
@@ -107,59 +106,5 @@ public class ServerEvents
 
         p.getCapability(SpellManagerProvider.SPELL_MANAGER).ifPresent(sm ->
                 sm.update(p));
-    }
-
-
-
-    public static final float soundDistractionThreshold = 0.1f;
-    @SubscribeEvent
-    public static void entitySoundPlayed(PlaySoundAtEntityEvent e)
-    {
-        if(!(e.getEntity() instanceof ServerPlayer p))
-            return;
-
-        p.sendMessage(new TextComponent("Sound played: " + e.getSound().getLocation() ), p.getUUID());
-
-        // if the sound is a villager bell sound, add an AntiDistraction modifier to the player's focus
-        if(e.getSound().getLocation().compareTo(SoundEvents.BELL_BLOCK.getLocation()) == 0)
-        {
-            // make sure we don't add duplicate modifiers
-            p.getCapability(FocusProvider.FOCUS).ifPresent(f -> {
-                if(!f.hasModifier(AntiDistraction.BELL_ANTIDISTRACTION))
-                {
-                    f.putModifier(new AntiDistraction(f, 0, 0.1f, 10f, AntiDistraction.BELL_ANTIDISTRACTION));
-                }
-                else
-                {
-                    f.getModifier(AntiDistraction.BELL_ANTIDISTRACTION, AntiDistraction.class).setDuration(10f);
-                }
-            });
-        }
-
-        // otherwise, add a Distraction modifier
-        else
-        {
-            if (e.getVolume() > soundDistractionThreshold)
-            {
-                p.getCapability(FocusProvider.FOCUS).ifPresent(f -> {
-                    if(!f.hasModifier(Distraction.SOUND_DISTRACTION))
-                    {
-                        f.putModifier(new Distraction(f, 0, 0.1f, 10f, Distraction.SOUND_DISTRACTION));
-                    }
-                    else
-                    {
-                        f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).setDuration(10f);
-                    }
-                });
-            }
-        }
-    }
-
-    // interrupt focus when player right clicks a block
-    @SubscribeEvent
-    public static void playerRightClickedBlock(PlayerInteractEvent.RightClickBlock e)
-    {
-        e.getPlayer().getCapability(FocusProvider.FOCUS).ifPresent(f ->
-                f.setFocusPressed(false));
     }
 }
