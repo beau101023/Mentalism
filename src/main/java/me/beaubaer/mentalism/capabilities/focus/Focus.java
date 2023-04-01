@@ -1,6 +1,7 @@
 package me.beaubaer.mentalism.capabilities.focus;
 
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
+import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.DecayingFocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.TickingFocusModifier;
 import me.beaubaer.mentalism.datastructures.ModifierPriorityMap;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Focus implements IFocus
 {
@@ -145,6 +147,26 @@ public class Focus implements IFocus
     {
         return modifiers.collectAll();
     }
+
+    // if the modifier is a decayingFocusModifier which already exists, reset the old modifier's amount and add the new one
+    public void putModifier(DecayingFocusModifier fm)
+    {
+        if(this.hasModifier(fm))
+        {
+            Optional<DecayingFocusModifier> oldModifier = getModifier(fm, DecayingFocusModifier.class);
+
+            if(oldModifier.isPresent())
+            {
+                oldModifier.get().reset();
+                return;
+            }
+        }
+
+        fm.intitializeParent(this);
+
+        modifiers.put(fm);
+    }
+
 
     public void putModifier(FocusModifier fm)
     {
