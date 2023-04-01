@@ -1,24 +1,24 @@
 package me.beaubaer.mentalism.capabilities.focus.modifiers;
 
+import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
-import me.beaubaer.mentalism.capabilities.focus.Focus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 public class FocusLevel extends FocusModifier
 {
-    public static final String UNIVERSAL_FOCUSLEVEL = "mentalism.focuslevel.universal";
+    public static final FocusLevel UNIVERSAL_FOCUSLEVEL = new FocusLevel(ModifierPriority.LEVEL, 1.0f, "mentalism.focuslevel.universal");
 
     private float level;
 
-    public FocusLevel(Focus parent, CompoundTag tag)
+    public FocusLevel(CompoundTag tag)
     {
-        super(parent, tag);
+        super(tag);
     }
 
-    public FocusLevel(Focus parent, float level, String ID)
+    public FocusLevel(short priority, float level, String ID)
     {
-        super(parent, 3, ID);
+        super(priority, ID);
         this.level = level;
     }
 

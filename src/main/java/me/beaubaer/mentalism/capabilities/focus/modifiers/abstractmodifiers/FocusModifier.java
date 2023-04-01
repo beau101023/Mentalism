@@ -6,22 +6,25 @@ import net.minecraft.nbt.ListTag;
 
 public abstract class FocusModifier
 {
-    public int priority;
+    public short priority;
 
     protected String ID;
     protected Focus parent;
 
-    public FocusModifier(Focus parent, CompoundTag tag)
+    public FocusModifier(CompoundTag tag)
     {
-        this.parent = parent;
         this.loadNBTData(tag);
     }
 
-    public FocusModifier(Focus parent, int priority, String ID)
+    public FocusModifier(short priority, String ID)
     {
-        this.parent = parent;
         this.priority = priority;
         this.ID = ID;
+    }
+
+    public void intitializeParent(Focus parent)
+    {
+        this.parent = parent;
     }
 
     public abstract float apply(float initialValue);
@@ -37,7 +40,7 @@ public abstract class FocusModifier
     {
         CompoundTag thisData = new CompoundTag();
         thisData.putString("type", this.getClass().getCanonicalName());
-        thisData.putInt("priority", priority);
+        thisData.putShort("priority", priority);
         thisData.putString("ID", ID);
         return thisData;
     }
@@ -46,7 +49,7 @@ public abstract class FocusModifier
 
     protected void loadCoreNBTData(CompoundTag nbt)
     {
-        this.priority = nbt.getInt("priority");
+        this.priority = nbt.getShort("priority");
         this.ID = nbt.getString("ID");
     }
 

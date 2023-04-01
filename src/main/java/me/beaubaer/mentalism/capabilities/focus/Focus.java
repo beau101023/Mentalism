@@ -116,9 +116,9 @@ public class Focus implements IFocus
         return Math.max(0f, focusPower);
     }
 
-    public boolean hasModifier(String ID)
+    public boolean hasModifier(FocusModifier modifier)
     {
-        return getModifiers().stream().anyMatch(modifier -> modifier.getID().equals(ID));
+        return modifiers.collectAll().contains(modifier);
     }
 
     public <T extends FocusModifier> ArrayList<T> getModifiers(Class<T> modifierType)
@@ -126,19 +126,19 @@ public class Focus implements IFocus
         return modifiers.collectType(modifierType);
     }
 
-    public <T extends FocusModifier> T getModifier(String ID, Class<T> type)
+    public <T extends FocusModifier> Optional<T> getModifier(FocusModifier modifier, Class<T> type)
     {
-        List<FocusModifier> modifiers = getModifiers().stream().filter(m -> m.getID().equals(ID)).toList();
+        List<FocusModifier> modifiers = getModifiers().stream().filter(fm -> fm.equals(modifier)).toList();
 
         if(modifiers.isEmpty())
-            throw new RuntimeException("getModifier called with a nonexistent ID!");
+            return Optional.empty();
 
         if(modifiers.size() > 1)
         {
             // normally, every modifier should have a unique ID
-            throw new RuntimeException("ID " + ID + " has more than one associated modifier.");
+            throw new RuntimeException("More than one modifier with ID \"" + modifier.getID() + "\" found!");
         }
-        else return type.cast(modifiers.get(0));
+        else return Optional.of(type.cast(modifiers.get(0)));
     }
 
     public ArrayList<FocusModifier> getModifiers()
@@ -148,8 +148,10 @@ public class Focus implements IFocus
 
     public void putModifier(FocusModifier fm)
     {
-        if(this.hasModifier(fm.getID()))
+        if(this.hasModifier(fm))
             throw new RuntimeException("putModifier called with an ID that already exists: " + fm.getID());
+
+        fm.intitializeParent(this);
 
         modifiers.put(fm);
     }

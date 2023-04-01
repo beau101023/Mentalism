@@ -1,18 +1,16 @@
 package me.beaubaer.mentalism.capabilities.focus.modifiers;
 
+import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.DecayingFocusModifier;
-import me.beaubaer.mentalism.capabilities.focus.Focus;
 
 public class Distraction extends DecayingFocusModifier
 {
-    public static final String SPELL_DISTRACTION = "mentalism.distraction.spell";
-    public static final int SPELL_DISTRACTION_PRIORITY = 3;
+    public static final Distraction SPELL_DISTRACTION = new Distraction(ModifierPriority.AFTER_LEVEL, 0.5f, 10.0f, "mentalism.distraction.spell");
+    public static final Distraction SOUND_DISTRACTION = new Distraction(ModifierPriority.AFTER_LEVEL, 1.0f, 1.0f,"mentalism.distraction.sound");
 
-    public static final String SOUND_DISTRACTION = "mentalism.distraction.sound";
-
-    public Distraction(Focus parent, int priority, float amount, float decayTime, String ID)
+    public Distraction(short priority, float amount, float decayTime, String ID)
     {
-        super(parent, priority, amount, decayTime, ID);
+        super(priority, amount, decayTime, ID);
     }
 
     @Override

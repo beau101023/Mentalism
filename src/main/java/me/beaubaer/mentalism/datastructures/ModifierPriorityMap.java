@@ -1,11 +1,12 @@
 package me.beaubaer.mentalism.datastructures;
 
+import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class ModifierPriorityMap extends TreeMap<Integer, ArrayList<FocusModifier>>
+public class ModifierPriorityMap extends TreeMap<Short, ArrayList<FocusModifier>>
 {
     public void put(FocusModifier fm)
     {
@@ -33,7 +34,7 @@ public class ModifierPriorityMap extends TreeMap<Integer, ArrayList<FocusModifie
         return all;
     }
 
-    public ArrayList<FocusModifier> collectPriority(int toCollect)
+    public ArrayList<FocusModifier> collectPriority(short toCollect)
     {
         return this.get(toCollect);
     }

@@ -9,9 +9,9 @@ public abstract class DecayingFocusModifier extends TickingFocusModifier
     protected float duration;
     protected float tickDecayRate;
 
-    public DecayingFocusModifier(Focus parent, int priority, float amount, float duration, String ID)
+    public DecayingFocusModifier(short priority, float amount, float duration, String ID)
     {
-        super(parent, priority, ID);
+        super(priority, ID);
 
         this.maxAmount = amount;
         this.amount = amount;
