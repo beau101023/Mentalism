@@ -29,6 +29,7 @@ public class SetFocusTimeC2SPacket
         {
             ServerPlayer sp = ctx.get().getSender();
 
+            assert sp != null;
             sp.getCapability(FocusProvider.FOCUS).ifPresent(f ->
             {
                 f.setFocusTime(focusTime);

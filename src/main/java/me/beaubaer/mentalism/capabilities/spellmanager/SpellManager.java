@@ -14,7 +14,7 @@ import java.util.List;
 public class SpellManager
 {
     public float castProgress = 0f;
-    public List<Integer> availableSpells;
+    public final List<Integer> availableSpells;
 
     public Spell selectedSpell = null;
 

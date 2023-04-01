@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class SpellUnlockedCondition implements ConditionCheckStrategy
 {
-    Spell spell;
+    final Spell spell;
 
     // constructor
     public SpellUnlockedCondition(Spell spell)

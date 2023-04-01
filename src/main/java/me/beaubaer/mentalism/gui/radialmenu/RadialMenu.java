@@ -24,7 +24,7 @@ import net.minecraftforge.client.gui.IIngameOverlay;
 @OnlyIn(Dist.CLIENT)
 public class RadialMenu implements IIngameOverlay
 {
-    public static RadialMenu SPELL_MENU = new RadialMenu();
+    public static final RadialMenu SPELL_MENU = new RadialMenu();
     boolean active = false;
     int numSegments = 1;
     int selectedSegment = -1;
@@ -37,17 +37,17 @@ public class RadialMenu implements IIngameOverlay
     private float menuInnerRadius = 0f;
     private float iconRadius = 0f;
     private float backgroundRadius = 0f;
-    private float menuCenterX = 0f;
-    private float menuCenterY = 0f;
+    private final float menuCenterX = 0f;
+    private final float menuCenterY = 0f;
 
-    static ResourceLocation magicCircle = new ResourceLocation(Mentalism.MOD_ID, "tex/magic_circle.png");
-    static ResourceLocation circle = new ResourceLocation(Mentalism.MOD_ID, "tex/circle.png");
+    static final ResourceLocation magicCircle = new ResourceLocation(Mentalism.MOD_ID, "tex/magic_circle.png");
+    static final ResourceLocation circle = new ResourceLocation(Mentalism.MOD_ID, "tex/circle.png");
     static ResourceLocation circleThicc = new ResourceLocation(Mentalism.MOD_ID, "tex/circle_thicc.png");
-    static ResourceLocation black = new ResourceLocation(Mentalism.MOD_ID, "tex/black.png");
-    static ResourceLocation cantcast = new ResourceLocation(Mentalism.MOD_ID, "tex/cantcast.png");
+    static final ResourceLocation black = new ResourceLocation(Mentalism.MOD_ID, "tex/black.png");
+    static final ResourceLocation cantcast = new ResourceLocation(Mentalism.MOD_ID, "tex/cantcast.png");
 
-    Minecraft mc = Minecraft.getInstance();
-    MouseHandler mouse = Minecraft.getInstance().mouseHandler;
+    final Minecraft mc = Minecraft.getInstance();
+    final MouseHandler mouse = Minecraft.getInstance().mouseHandler;
 
     public RadialMenu()
     {

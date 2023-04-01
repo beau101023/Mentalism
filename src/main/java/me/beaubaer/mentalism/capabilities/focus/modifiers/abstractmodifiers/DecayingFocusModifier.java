@@ -4,7 +4,7 @@ import me.beaubaer.mentalism.capabilities.focus.Focus;
 
 public abstract class DecayingFocusModifier extends TickingFocusModifier
 {
-    protected float maxAmount;
+    protected final float maxAmount;
     protected float amount;
     protected float duration;
     protected float tickDecayRate;

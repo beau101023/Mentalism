@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpellManagerProvider implements ICapabilityProvider
 {
-    public static Capability<SpellManager> SPELL_MANAGER = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<SpellManager> SPELL_MANAGER = CapabilityManager.get(new CapabilityToken<>() {});
     private SpellManager spellManager = null;
     private final LazyOptional<SpellManager> optional = LazyOptional.of(this::createSpellManager);
 

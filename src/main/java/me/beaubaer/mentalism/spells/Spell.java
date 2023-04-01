@@ -17,15 +17,15 @@ import java.util.function.Predicate;
  */
 public class Spell extends ForgeRegistryEntry<Spell>
 {
-    private Spell thisSpell;
+    private final Spell thisSpell;
 
-    private int spellNum;
-    private String spellID;
-    private float castTimeSeconds;
+    private final int spellNum;
+    private final String spellID;
+    private final float castTimeSeconds;
 
-    List<Consumer<Player>> castActions = new ArrayList<>();
-    List<Predicate<Player>> castConditions = new ArrayList<>();
-    List<Predicate<Player>> availabilityConditions = new ArrayList<>();
+    final List<Consumer<Player>> castActions = new ArrayList<>();
+    final List<Predicate<Player>> castConditions = new ArrayList<>();
+    final List<Predicate<Player>> availabilityConditions = new ArrayList<>();
 
 
     /**

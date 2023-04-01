@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class UnlockStateProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    public static Capability<UnlockState> UNLOCK_STATE = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<UnlockState> UNLOCK_STATE = CapabilityManager.get(new CapabilityToken<>() {});
     private UnlockState unlockState = null;
     private final LazyOptional<UnlockState> optional = LazyOptional.of(this::createUnlockManager);
 

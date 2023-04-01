@@ -33,6 +33,7 @@ public class FocusKeySyncC2SPacket
         context.enqueueWork(() ->
         {
             ServerPlayer player = context.getSender();
+            assert player != null;
             player.getCapability(FocusProvider.FOCUS).ifPresent(f ->
                     f.setFocusPressed(focusing));
         });

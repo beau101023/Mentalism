@@ -4,5 +4,5 @@ import net.minecraft.world.entity.player.Player;
 
 public interface ActivationStrategy
 {
-    public void activate(Player p);
+    void activate(Player p);
 }

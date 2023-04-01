@@ -10,7 +10,7 @@ import java.util.List;
 // condition that checks if the player has unlocked all spells in a list
 public class SpellListUnlockedCondition implements ConditionCheckStrategy
 {
-    List<Spell> spells;
+    final List<Spell> spells;
 
     // constructor
     public SpellListUnlockedCondition(List<Spell> spells)

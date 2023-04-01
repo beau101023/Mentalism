@@ -37,12 +37,6 @@ public class MentalismMessages
             .consumer(FocusKeySyncC2SPacket::handle)
             .add();
 
-    net.messageBuilder(OpenMeditationS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-            .decoder(OpenMeditationS2CPacket::new)
-            .encoder(OpenMeditationS2CPacket::toBytes)
-            .consumer(OpenMeditationS2CPacket::handle)
-            .add();
-
     net.messageBuilder(SetFocusTimeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
             .decoder(SetFocusTimeC2SPacket::new)
             .encoder(SetFocusTimeC2SPacket::toBytes)

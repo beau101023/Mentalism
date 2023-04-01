@@ -9,9 +9,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+@Deprecated
 public class OpenMeditationS2CPacket
 {
-
     public OpenMeditationS2CPacket()
     {
 

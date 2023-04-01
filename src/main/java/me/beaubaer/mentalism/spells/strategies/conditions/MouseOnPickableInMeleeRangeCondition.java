@@ -2,6 +2,7 @@ package me.beaubaer.mentalism.spells.strategies.conditions;
 
 import me.beaubaer.mentalism.spells.strategies.interfaces.ConditionCheckStrategy;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -13,11 +14,11 @@ import java.util.List;
 
 public class MouseOnPickableInMeleeRangeCondition implements ConditionCheckStrategy
 {
-    private List<Block> targetBlocks;
-    private List<EntityType> targetEntities;
+    private final List<Block> targetBlocks;
+    private final List<EntityType<Entity>> targetEntities;
     private boolean hitsAllEntities = false;
     private boolean hitsAllBlocks = false;
-    public MouseOnPickableInMeleeRangeCondition(List<Block> targetBlocks, List<EntityType> targetEntities, boolean hitsAllEntities, boolean hitsAllBlocks)
+    public MouseOnPickableInMeleeRangeCondition(List<Block> targetBlocks, List<EntityType<Entity>> targetEntities, boolean hitsAllEntities, boolean hitsAllBlocks)
     {
         this.targetBlocks = targetBlocks;
         this.targetEntities = targetEntities;

@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class MeditationScreen extends Screen
 {
     private int renderTicks = 0;
@@ -49,9 +50,6 @@ public class MeditationScreen extends Screen
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.ScreenEvent.BackgroundDrawnEvent(this, pPoseStack));
         }
     }
-
-    @Override
-    public boolean shouldCloseOnEsc() { return true; }
 
     @Override
     public boolean isPauseScreen() { return false; }

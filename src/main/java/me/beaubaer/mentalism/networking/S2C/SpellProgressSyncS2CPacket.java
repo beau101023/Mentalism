@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class SpellProgressSyncS2CPacket
 {
-    float spellProgress;
+    final float spellProgress;
 
     public SpellProgressSyncS2CPacket(float spellProgress)
     {

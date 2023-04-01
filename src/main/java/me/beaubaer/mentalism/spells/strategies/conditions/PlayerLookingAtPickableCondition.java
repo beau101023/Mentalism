@@ -12,8 +12,8 @@ import java.util.List;
 
 public class PlayerLookingAtPickableCondition implements ConditionCheckStrategy
 {
-    private List<Block> targetBlocks;
-    private List<EntityType> targetEntities;
+    private final List<Block> targetBlocks;
+    private final List<EntityType> targetEntities;
     private boolean hitsAllEntities = false;
     private boolean hitsAllBlocks = false;
     private float checkDistance = -1f;

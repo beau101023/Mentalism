@@ -6,8 +6,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class PlayerFocusCondition implements ConditionCheckStrategy
 {
-    private float focusThreshold;
-    private boolean greaterThan;
+    private final float focusThreshold;
+    private final boolean greaterThan;
 
     public PlayerFocusCondition(float focusThreshold, boolean greaterThan)
     {

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class SelectedSpellSyncC2SPacket
 {
-    private int spellNum;
+    private final int spellNum;
 
     public SelectedSpellSyncC2SPacket(int spellNum)
     {

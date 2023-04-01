@@ -4,5 +4,5 @@ import net.minecraft.world.entity.player.Player;
 
 public interface ConditionCheckStrategy
 {
-    public boolean check(Player p);
+    boolean check(Player p);
 }

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class FocusValueSyncS2CPacket
 {
-    private float focusVal;
+    private final float focusVal;
 
     public FocusValueSyncS2CPacket(float focusVal)
     {
