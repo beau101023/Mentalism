@@ -9,7 +9,6 @@ import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
 import me.beaubaer.mentalism.capabilities.unlocks.UnlockState;
 import me.beaubaer.mentalism.capabilities.unlocks.UnlockStateProvider;
 import me.beaubaer.mentalism.registries.SpellRegistry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -89,9 +88,8 @@ public class ServerEvents
 
             // see sound distraction amount
             f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).ifPresent(distraction ->
-            {
-                p.sendMessage(new TextComponent("Sound distraction amount: " + distraction.getAmount()), p.getUUID());
-            });
+                Mentalism.LOGGER.debug("Sound distraction amount: " + distraction.getAmount())
+            );
 
             // if we go over 1.0 focus power, unlock shootArrow spell
             if(f.getFocusPower() > 1.0f)
