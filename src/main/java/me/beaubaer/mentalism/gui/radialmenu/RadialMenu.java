@@ -8,11 +8,13 @@ import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.clientdata.FocusData;
 import me.beaubaer.mentalism.clientdata.SpellCastData;
 import me.beaubaer.mentalism.clientdata.UnlockData;
+import me.beaubaer.mentalism.gui.FocusBar;
 import me.beaubaer.mentalism.gui.GraphicsUtil;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.C2S.SelectedSpellSyncC2SPacket;
 import me.beaubaer.mentalism.registries.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
+import me.beaubaer.mentalism.util.MentalMath;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +44,8 @@ public class RadialMenu implements IIngameOverlay
     private final float menuCenterX = 0f;
     private final float menuCenterY = 0f;
 
+    private static final FocusBar focusBar = new FocusBar(100, 5, 30, 30);
+
     static final ResourceLocation magicCircle = new ResourceLocation(Mentalism.MOD_ID, "tex/magic_circle.png");
     static final ResourceLocation circle = new ResourceLocation(Mentalism.MOD_ID, "tex/circle.png");
     static ResourceLocation circleThicc = new ResourceLocation(Mentalism.MOD_ID, "tex/circle_thicc.png");
@@ -68,61 +72,51 @@ public class RadialMenu implements IIngameOverlay
         }
 
         float renderFadeTarget = updateRenderFadeTarget();
-        updateRenderFade(renderFadeTarget);
+        renderFade = MentalMath.smoothToTarget(renderFade, renderFadeTarget);
 
         // rendering
         updateMenuAlpha();
 
+        // if menuAlpha is 0, skip everything except the focus bar
         if(menuAlpha == 0f)
-            return;
+        {
+            focusBar.render(poseStack);
+        }
+        else
+        {
+            updateIconSize();
+            updateMenuRadius(height);
 
-        updateIconSize();
-        updateMenuRadius(height);
+            Matrix4f pose = poseStack.last().pose().copy();
 
-        Matrix4f pose = poseStack.last().pose().copy();
+            renderHyperfocusDarkness(pose, width, height);
 
-        renderHyperfocusedDarkness(pose, width, height);
-        renderMagicMenuLayout(pose, width, height);
+            // when the menu is active, we still want to see the focus bar above the hyperfocus darkness
+            focusBar.render(poseStack);
 
-        renderSpellIcons(pose, width, height);
+            renderMagicMenuLayout(pose, width, height);
 
-        if(!active)
-            return;
-        // selected segment highlight
-        renderSegmentIcon(pose, width, height, magicCircle, selectedSegment, 0.75f * menuAlpha);
+            renderSpellIcons(pose, width, height);
+
+            if (!active)
+                return;
+            // selected segment highlight
+            renderSegmentIcon(pose, width, height, magicCircle, selectedSegment, 0.75f * menuAlpha);
+        }
     }
 
     private float updateRenderFadeTarget()
     {
-        float renderFadeTarget = 0f;
+        float renderFadeTarget;
         if(active)
         {
-            renderFadeTarget = FocusData.localFocus;
+            renderFadeTarget = FocusData.localFocus > 0.9f ? 1.0f : 0.0f;
         }
         else
         {
             renderFadeTarget = 0.0f;
         }
         return renderFadeTarget;
-    }
-
-    private void updateRenderFade(float target)
-    {
-        // move renderFade towards target with a logarithmic function
-        // this makes the fade-in and fade-out look smoother since target is updated in discrete steps.
-        if(renderFade != target)
-        {
-            if(target - renderFade >= 0)
-            {
-                renderFade += Math.log((target - renderFade)*0.1f + 1.0f);
-            }
-            if(target - renderFade < 0)
-            {
-                renderFade -= Math.log(-(target - renderFade)*0.1f + 1.0f);
-            }
-            renderFade = Math.min(renderFade, 1.0f);
-            renderFade = Math.max(renderFade, 0.0f);
-        }
     }
 
     private void syncSelectionToServer()
@@ -199,7 +193,7 @@ public class RadialMenu implements IIngameOverlay
         GraphicsUtil.renderSquareTextureOverlay(pose, menuInnerRadius, width/2f, height/2f, circle, 0.5f* menuAlpha);
     }
 
-    private void renderHyperfocusedDarkness(Matrix4f pose, int width, int height)
+    private void renderHyperfocusDarkness(Matrix4f pose, int width, int height)
     {
         if(!UnlockData.canSeeWhenCasting)
         {
