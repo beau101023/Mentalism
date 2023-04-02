@@ -1,9 +1,8 @@
-package me.beaubaer.mentalism.events;
+package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.IFocus;
-import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManager;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
 import me.beaubaer.mentalism.capabilities.unlocks.UnlockState;
@@ -76,7 +75,10 @@ public class ServerEvents
         if(e.side != LogicalSide.SERVER)
             return;
 
-        if(e.phase == TickEvent.Phase.END)
+        if(e.phase == TickEvent.Phase.START)
+            return;
+
+        if(e.type != TickEvent.Type.PLAYER)
             return;
 
         ServerPlayer p = (ServerPlayer) e.player;
@@ -86,15 +88,15 @@ public class ServerEvents
             f.update();
             f.sync(p);
 
-            // if we go over 1.0 focus power, unlock shootArrow spell
+            // if we go over 1.0 focus power, unlock biden blast spell
             if(f.getFocusPower() > 1.0f)
             {
                 p.getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(um ->
                 {
-                    if(!um.isUnlocked(SpellRegistry.BIDEN_BLAST.get()))
+                    SpellRegistry.BIDEN_BLAST.ifPresent(s ->
                     {
-                        um.unlock(SpellRegistry.BIDEN_BLAST.get());
-                    }
+                        if(!um.isUnlocked(s)) um.unlock(s);
+                    });
                 });
             }
         });

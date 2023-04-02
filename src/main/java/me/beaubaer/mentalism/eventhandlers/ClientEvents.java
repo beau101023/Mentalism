@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.events;
+package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.clientdata.FocusData;
@@ -37,6 +37,10 @@ public class ClientEvents
     public static void clientTick(TickEvent.ClientTickEvent e)
     {
         Minecraft mc = Minecraft.getInstance();
+
+        // gotta remember to only run tick events once
+        if(e.phase != TickEvent.Phase.END)
+            return;
 
         // make sure we're actually loaded into a world before we do anything with ticks
         if (mc.player == null)

@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.events;
+package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.gui.RadialMenu;
