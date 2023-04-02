@@ -1,6 +1,8 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
+import me.beaubaer.mentalism.clientdata.FocusData;
+import me.beaubaer.mentalism.events.IValueUpdatedListener;
 import me.beaubaer.mentalism.gui.RadialMenu;
 import me.beaubaer.mentalism.networking.C2S.*;
 import me.beaubaer.mentalism.networking.MentalismMessages;
@@ -10,6 +12,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Mentalism.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents
@@ -26,6 +31,8 @@ public class ClientEvents
     // doubleclicked state
     private static boolean doubleClicked = false;
 
+
+    public static List<IValueUpdatedListener> focusUpdatedListeners = new ArrayList<>();
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent e)
     {
@@ -34,6 +41,11 @@ public class ClientEvents
         // make sure we're actually loaded into a world before we do anything with ticks
         if (mc.player == null)
             return;
+
+        for(IValueUpdatedListener listener : focusUpdatedListeners)
+        {
+            listener.onValueUpdated(FocusData.localFocus);
+        }
 
         handleFKeyStates();
     }

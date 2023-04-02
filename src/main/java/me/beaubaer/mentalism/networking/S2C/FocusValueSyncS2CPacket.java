@@ -29,7 +29,7 @@ public class FocusValueSyncS2CPacket
     {
         ctx.get().enqueueWork(() ->
         {
-            FocusData.localFocus = focusVal;
+            FocusData.setLocalFocus(focusVal);
         });
         ctx.get().setPacketHandled(true);
     }

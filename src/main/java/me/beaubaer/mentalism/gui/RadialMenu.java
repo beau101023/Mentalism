@@ -64,13 +64,13 @@ public class RadialMenu implements IIngameOverlay
         // logic
         if(active)
         {
+            // FIXME Segment selection doesn't seem to work currently
             updateNumSegments();
             updateSelectedSegment(width, height);
             syncSelectionToServer();
         }
 
         // rendering
-
         float renderFadeTarget = updateRenderFadeTarget();
         renderFade = MentalMath.smoothTickedToRender(renderFade, renderFadeTarget);
 
@@ -79,7 +79,7 @@ public class RadialMenu implements IIngameOverlay
         // if menuAlpha is 0, skip everything except the focus bar
         if(menuAlpha == 0f)
         {
-            focusBar.render(poseStack);
+            focusBar.render(poseStack, partialTick);
         }
         else
         {
@@ -91,7 +91,7 @@ public class RadialMenu implements IIngameOverlay
             renderHyperfocusDarkness(pose, width, height);
 
             // when the menu is active, we still want to see the focus bar above the hyperfocus darkness
-            focusBar.render(poseStack);
+            focusBar.render(poseStack, partialTick);
 
             renderMagicMenuLayout(pose, width, height);
 
