@@ -1,5 +1,6 @@
 package me.beaubaer.mentalism.capabilities.focus;
 
+import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.DecayingFocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
@@ -33,8 +34,8 @@ public class Focus implements IFocus
 
     // default times for focus to reach max and min value
     // modified in special situations- if this is lowered, it is a major upgrade for the player
-    public static final float defaultFocusTime = 0.4f;
-    public static final float defaultSlowedFocusTime = 2.0f;
+    public static final float defaultFocusTime = 1f;
+    public static final float defaultSlowedFocusTime = 2f;
 
     // times in seconds determining how long it takes for focus to reach 1 from 0, or 0 from 1
     protected float focusTime = defaultFocusTime;

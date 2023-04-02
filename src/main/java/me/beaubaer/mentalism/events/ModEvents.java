@@ -1,7 +1,7 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.gui.radialmenu.RadialMenu;
+import me.beaubaer.mentalism.gui.RadialMenu;
 import me.beaubaer.mentalism.keymappings.KeyMappings;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

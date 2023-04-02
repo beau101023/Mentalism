@@ -12,23 +12,21 @@ public class MentalMath
         return 1f/(20f*seconds);
     }
 
-    // when called every frame, smoothly moves value towards target
-    public static float smoothToTarget(float value, float target)
+
+    /**
+     * This method is used to smooth the motion of a target value which is updated 20 times a second (standard minecraft tickrate)
+     * to achieve a smooth motion when rendered 60 times a second (standard minecraft render framerate).
+     * Should only be used in render methods, and called once per render.
+     * @param value Render value
+     * @param target Target value
+     * @return Smoothed render value
+     */
+    public static float smoothTickedToRender(float value, float target)
     {
         if(value == target)
             return value;
 
-        return value + (target - value)*0.1f;
-
-        /*if(target - value >= 0)
-        {
-            return value + (float) Math.log((target - value)*0.1f + 1.0f);
-        }
-        else if(target - value < 0)
-        {
-            return value - (float) Math.log(-(target - value)*0.1f + 1.0f);
-        }*/
-        //value = Math.min(value, 1.0f);
-        //value = Math.max(value, 0.0f);
+        // the displacement between value and target is multipled by 1/3 because the render framerate is 3x the tickrate
+        return value + (target - value)*0.333f;
     }
 }

@@ -86,11 +86,6 @@ public class ServerEvents
             f.update();
             f.sync(p);
 
-            // see sound distraction amount
-            f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).ifPresent(distraction ->
-                Mentalism.LOGGER.debug("Sound distraction amount: " + distraction.getAmount())
-            );
-
             // if we go over 1.0 focus power, unlock shootArrow spell
             if(f.getFocusPower() > 1.0f)
             {

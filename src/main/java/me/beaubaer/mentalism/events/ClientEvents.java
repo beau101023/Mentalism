@@ -1,15 +1,12 @@
 package me.beaubaer.mentalism.events;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.gui.radialmenu.RadialMenu;
+import me.beaubaer.mentalism.gui.RadialMenu;
 import me.beaubaer.mentalism.networking.C2S.*;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.keymappings.KeyMappings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

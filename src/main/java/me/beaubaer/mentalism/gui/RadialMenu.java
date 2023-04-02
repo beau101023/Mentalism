@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.gui.radialmenu;
+package me.beaubaer.mentalism.gui;
 
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -8,8 +8,6 @@ import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.clientdata.FocusData;
 import me.beaubaer.mentalism.clientdata.SpellCastData;
 import me.beaubaer.mentalism.clientdata.UnlockData;
-import me.beaubaer.mentalism.gui.FocusBar;
-import me.beaubaer.mentalism.gui.GraphicsUtil;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.C2S.SelectedSpellSyncC2SPacket;
 import me.beaubaer.mentalism.registries.SpellRegistry;
@@ -71,10 +69,11 @@ public class RadialMenu implements IIngameOverlay
             syncSelectionToServer();
         }
 
-        float renderFadeTarget = updateRenderFadeTarget();
-        renderFade = MentalMath.smoothToTarget(renderFade, renderFadeTarget);
-
         // rendering
+
+        float renderFadeTarget = updateRenderFadeTarget();
+        renderFade = MentalMath.smoothTickedToRender(renderFade, renderFadeTarget);
+
         updateMenuAlpha();
 
         // if menuAlpha is 0, skip everything except the focus bar
