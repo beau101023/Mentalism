@@ -7,8 +7,12 @@ import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.networking.C2S.SetCanFocusC2SPacket;
 import me.beaubaer.mentalism.networking.C2S.SetFocusTimeC2SPacket;
+import me.beaubaer.mentalism.networking.C2S.SoundDistractionC2SPacket;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.sounds.SoundSource;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -75,5 +79,18 @@ public class SituationalMalusEvents
         {
             f.putModifier(RIGHT_CLICK_DISTRACTION);
         });
+    }
+
+    @SubscribeEvent
+    public static void soundPlayed(PlaySoundEvent e)
+    {
+        if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
+            return;
+
+        SoundInstance eSound = e.getSound();
+
+        eSound.resolve(e.getEngine().soundManager);
+
+        MentalismMessages.sendToServer(new SoundDistractionC2SPacket(eSound.getVolume()));
     }
 }

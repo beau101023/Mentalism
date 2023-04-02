@@ -41,19 +41,6 @@ public class ClientEvents
         handleFKeyStates();
     }
 
-    @SubscribeEvent
-    public static void soundPlayed(PlaySoundEvent e)
-    {
-        if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
-            return;
-
-        SoundInstance eSound = e.getSound();
-
-        eSound.resolve(e.getEngine().soundManager);
-
-        MentalismMessages.sendToServer(new SoundDistractionC2SPacket(eSound.getVolume()));
-    }
-
     private static void handleFKeyStates()
     {
         updateDoubleClickTimer();

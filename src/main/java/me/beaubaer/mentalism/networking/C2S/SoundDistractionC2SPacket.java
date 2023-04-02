@@ -1,11 +1,13 @@
 package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
+import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class SoundDistractionC2SPacket
@@ -36,16 +38,18 @@ public class SoundDistractionC2SPacket
             assert p != null;
             p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
             {
-                if (!f.hasModifier(Distraction.SOUND_DISTRACTION))
+                // If the player already has a sound distraction, update it. Otherwise, create a new one.
+                Optional<Distraction> soundDistraction = f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class);
+                if(soundDistraction.isPresent())
                 {
-                    f.putModifier(Distraction.SOUND_DISTRACTION);
+                    Distraction d = soundDistraction.get();
+                    d.reset();
+                    d.setAmount(d.getAmount() + volume);
                 }
                 else
                 {
-                    f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class).ifPresent(sd ->
-                    {
-                        sd.setAmount(sd.getAmount() + 0.1f * volume);
-                    });
+                    Distraction.SOUND_DISTRACTION.setAmount(volume);
+                    f.putModifier(Distraction.SOUND_DISTRACTION);
                 }
             });
 
