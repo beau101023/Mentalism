@@ -274,7 +274,8 @@ public class Focus implements IFocus
 
         FocusModifier fm;
         try {
-            fm = (FocusModifier) c.getConstructor(Focus.class, CompoundTag.class).newInstance(this, nbt);
+            fm = (FocusModifier) c.getConstructor(CompoundTag.class).newInstance( nbt);
+            fm.intitializeParent(this);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
