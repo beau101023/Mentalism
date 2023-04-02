@@ -20,6 +20,10 @@ public class Mentalism
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "mentalism";
 
+    // TODO make a set of debug and release parameters to avoid
+    //  accidentally building a release with debug stuff.
+    public static final boolean SOUND_DISTRACTIONS = true;
+
     public Mentalism()
     {
         // Register the setup method for mod loading

@@ -84,6 +84,9 @@ public class SituationalMalusEvents
     @SubscribeEvent
     public static void soundPlayed(PlaySoundEvent e)
     {
+        if(!Mentalism.SOUND_DISTRACTIONS)
+            return;
+
         if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
             return;
 
