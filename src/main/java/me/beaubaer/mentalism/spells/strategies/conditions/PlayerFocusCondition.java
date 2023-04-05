@@ -1,10 +1,9 @@
 package me.beaubaer.mentalism.spells.strategies.conditions;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
-import me.beaubaer.mentalism.spells.strategies.interfaces.ConditionCheckStrategy;
 import net.minecraft.world.entity.player.Player;
 
-public class PlayerFocusCondition implements ConditionCheckStrategy
+public class PlayerFocusCondition
 {
     private final float focusThreshold;
     private final boolean greaterThan;

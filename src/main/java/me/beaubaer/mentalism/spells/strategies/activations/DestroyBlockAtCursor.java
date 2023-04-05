@@ -1,17 +1,16 @@
 package me.beaubaer.mentalism.spells.strategies.activations;
 
-import me.beaubaer.mentalism.spells.strategies.interfaces.ActivationStrategy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class DestroyBlockAtCursor implements ActivationStrategy
+public class DestroyBlockAtCursor
 {
-    public void activate(Player p)
+    public static void activate(Player p)
     {
-        BlockHitResult hit = (BlockHitResult) p.pick(5.0D, 0.0F, false);
-        if (hit == null) {
+        BlockHitResult hit = (BlockHitResult) p.pick(128.0D, 0.0F, false);
+        if (hit.getType() == BlockHitResult.Type.MISS) {
             return;
         }
 

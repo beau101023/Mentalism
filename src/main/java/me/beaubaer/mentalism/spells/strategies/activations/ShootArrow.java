@@ -1,12 +1,11 @@
 package me.beaubaer.mentalism.spells.strategies.activations;
 
-import me.beaubaer.mentalism.spells.strategies.interfaces.ActivationStrategy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 
-public class ShootArrow implements ActivationStrategy
+public class ShootArrow
 {
-    public void activate(Player p)
+    public static void activate(Player p)
     {
         Arrow a = new Arrow(p.level, p);
 

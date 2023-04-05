@@ -23,9 +23,10 @@ public class Spell extends ForgeRegistryEntry<Spell>
     private final String spellID;
     private final float castTimeSeconds;
 
-    final List<Consumer<Player>> castActions = new ArrayList<>();
-    final List<Predicate<Player>> castConditions = new ArrayList<>();
-    final List<Predicate<Player>> availabilityConditions = new ArrayList<>();
+    Consumer<ServerPlayer> castAction;
+    BiConsumer<ServerPlayer, Float> castInProgressAction;
+    Predicate<ServerPlayer> castCondition;
+    Predicate<ServerPlayer> availabilityCondition;
 
 
     /**
@@ -41,7 +42,7 @@ public class Spell extends ForgeRegistryEntry<Spell>
         this.thisSpell = this;
 
         // spells should be unlocked before they can be cast
-        this.availabilityConditions.add(p -> new SpellUnlockedCondition(this).check(p));
+        this.addAvailabilityCondition(p -> new SpellUnlockedCondition(this).check(p));
     }
 
     public Spell getSpell()
@@ -49,9 +50,12 @@ public class Spell extends ForgeRegistryEntry<Spell>
         return thisSpell;
     }
 
-    public void addCastAction(Consumer<Player> action)
+    public void addCastAction(Consumer<ServerPlayer> action)
     {
-        castActions.add(action);
+        if(castAction == null)
+            castAction = action;
+        else
+            castAction = castAction.andThen(action);
     }
 
     public void addCastCondition(Predicate<Player> condition)
@@ -59,35 +63,62 @@ public class Spell extends ForgeRegistryEntry<Spell>
         castConditions.add(condition);
     }
 
-    public void addAvailabilityCondition(Predicate<Player> condition)
+    public void addCastCondition(Predicate<ServerPlayer> condition)
     {
-        availabilityConditions.add(condition);
+        if(castCondition == null)
+            castCondition = condition;
+        else
+            castCondition = castCondition.and(condition);
+    }
+
+    public void addAvailabilityCondition(Predicate<ServerPlayer> condition)
+    {
+        if(availabilityCondition == null)
+            availabilityCondition = condition;
+        else
+            availabilityCondition = availabilityCondition.and(condition);
     }
 
     /**
      * @param p The player attempting to cast the spell
      */
-    public void activate(Player p)
+    public void activate(ServerPlayer p)
     {
-        castActions.forEach(s -> s.accept(p));
+        if(castAction != null)
+            castAction.accept(p);
+    }
+
+    /**
+     * @param p The player attempting to cast the spell
+     */
+    public void whileCasting(ServerPlayer p, float progress)
+    {
+        if(castInProgressAction != null)
+            castInProgressAction.accept(p, progress);
     }
 
     /**
      * @param p The player querying if they meet the conditions to cast
      * @return Whether the player meets the conditions to cast
      */
-    public boolean canCast(Player p)
+    public boolean canCast(ServerPlayer p)
     {
-        return castConditions.stream().allMatch(s -> s.test(p)) && available(p);
+        if(castCondition == null)
+            return true;
+        else
+            return castCondition.test(p);
     }
 
     /**
      * @param p The player querying if the spell is available
      * @return Whether the spell shows up in the spell menu
      */
-    public boolean available(Player p)
+    public boolean available(ServerPlayer p)
     {
-        return availabilityConditions.stream().allMatch(s -> s.test(p));
+        if(availabilityCondition == null)
+            return true;
+        else
+            return availabilityCondition.test(p);
     }
 
     public int getSpellNum()
