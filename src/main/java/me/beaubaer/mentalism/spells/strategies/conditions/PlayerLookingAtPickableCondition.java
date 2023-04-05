@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.spells.strategies.conditions;
 
-import me.beaubaer.mentalism.spells.strategies.interfaces.ConditionCheckStrategy;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -10,13 +9,13 @@ import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
 
-public class PlayerLookingAtPickableCondition implements ConditionCheckStrategy
+public class PlayerLookingAtPickableCondition
 {
     private final List<Block> targetBlocks;
     private final List<EntityType> targetEntities;
     private boolean hitsAllEntities = false;
     private boolean hitsAllBlocks = false;
-    private float checkDistance = -1f;
+    private float checkDistance = 128f;
 
     public PlayerLookingAtPickableCondition(List<Block> targetBlocks, List<EntityType> targetEntities, boolean hitsAllEntities, boolean hitsAllBlocks, float checkDistance)
     {
@@ -27,7 +26,6 @@ public class PlayerLookingAtPickableCondition implements ConditionCheckStrategy
         this.checkDistance = checkDistance;
     }
 
-    @Override
     public boolean check(Player p)
     {
         HitResult res = p.pick(checkDistance, 0, false);

@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.spells.strategies.conditions;
 
-import me.beaubaer.mentalism.spells.strategies.interfaces.ConditionCheckStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,48 +10,17 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
+import java.util.function.Predicate;
 
-public class MouseOnPickableInMeleeRangeCondition implements ConditionCheckStrategy
+public class MouseOnPickableInMeleeRangeCondition
 {
-    private final List<Block> targetBlocks;
-    private final List<EntityType<Entity>> targetEntities;
-    private boolean hitsAllEntities = false;
-    private boolean hitsAllBlocks = false;
-    public MouseOnPickableInMeleeRangeCondition(List<Block> targetBlocks, List<EntityType<Entity>> targetEntities, boolean hitsAllEntities, boolean hitsAllBlocks)
-    {
-        this.targetBlocks = targetBlocks;
-        this.targetEntities = targetEntities;
-        this.hitsAllEntities = hitsAllEntities;
-        this.hitsAllBlocks = hitsAllBlocks;
-    }
-
-    @Override
-    public boolean check(Player p)
+    public static boolean check(Player p, Predicate<HitResult> predicate)
     {
         HitResult res = Minecraft.getInstance().hitResult;
 
         if(res != null && res.getType() != HitResult.Type.MISS)
         {
-            if(res.getType() == HitResult.Type.ENTITY)
-            {
-                if(hitsAllEntities)
-                    return true;
-
-                if(targetEntities == null)
-                    return false;
-                else
-                    return targetEntities.contains(((EntityHitResult) res).getEntity().getType());
-            }
-            else if(res.getType() == HitResult.Type.BLOCK)
-            {
-                if(hitsAllBlocks)
-                    return true;
-
-                if(targetBlocks == null)
-                    return false;
-                else
-                    return targetBlocks.stream().anyMatch(b -> p.level.getBlockState(((BlockHitResult) res).getBlockPos()).is(b));
-            }
+            return predicate.test(res);
         }
 
         return false;
