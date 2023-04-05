@@ -19,13 +19,21 @@ public class Mentalism
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "mentalism";
+    public static final boolean DEBUG = true;
 
-    // TODO make a set of debug and release parameters to avoid
-    //  accidentally building a release with debug stuff.
-    public static final boolean SOUND_DISTRACTIONS = true;
+    // default settings
+    public static boolean SOUND_DISTRACTIONS = true;
+    public static boolean SHOW_FOCUS_INDICATOR = false;
 
     public Mentalism()
     {
+        if(DEBUG)
+        {
+            LOGGER.info("DEBUG MODE ENABLED");
+            SOUND_DISTRACTIONS = false;
+            SHOW_FOCUS_INDICATOR = true;
+        }
+
         // Register the setup method for mod loading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 

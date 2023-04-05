@@ -70,6 +70,9 @@ public class RadialMenu implements IIngameOverlay
             syncSelectionToServer();
         }
 
+        if(Mentalism.SHOW_FOCUS_INDICATOR)
+            GraphicsUtil.debugString(poseStack,"Focus: " + FocusData.localFocus, 0, 5, 50);
+
         // rendering
         float renderFadeTarget = updateRenderFadeTarget();
         renderFade = MentalMath.smoothTickedToRender(renderFade, renderFadeTarget);
