@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.Tags;
 
 public class ExtractOreFromBlock
 {
@@ -32,20 +33,21 @@ public class ExtractOreFromBlock
         // spawn block broken particles
         level.levelEvent(2001, blockPos, Block.getId(blockState));
 
+
         // if the block is a normal ore, replace with stone
-        if (blockState.is(Blocks.GOLD_ORE) || blockState.is(Blocks.IRON_ORE) || blockState.is(Blocks.COAL_ORE) || blockState.is(Blocks.DIAMOND_ORE) || blockState.is(Blocks.EMERALD_ORE) || blockState.is(Blocks.LAPIS_ORE) || blockState.is(Blocks.REDSTONE_ORE))
+        if (blockState.is(Tags.Blocks.ORES_IN_GROUND_STONE))
         {
             level.setBlockAndUpdate(hit.getBlockPos(), Blocks.STONE.defaultBlockState());
         }
 
         // if the block is a nether ore, replace with netherrack
-        else if (blockState.is(Blocks.NETHER_GOLD_ORE) || blockState.is(Blocks.NETHER_QUARTZ_ORE) || blockState.is(Blocks.ANCIENT_DEBRIS))
+        else if (blockState.is(Tags.Blocks.ORES_IN_GROUND_NETHERRACK))
         {
             level.setBlockAndUpdate(hit.getBlockPos(), Blocks.NETHERRACK.defaultBlockState());
         }
 
         // if the block is a deepslate ore, replace with deepslate
-        else if (blockState.is(Blocks.DEEPSLATE_GOLD_ORE) || blockState.is(Blocks.DEEPSLATE_IRON_ORE) || blockState.is(Blocks.DEEPSLATE_COAL_ORE) || blockState.is(Blocks.DEEPSLATE_DIAMOND_ORE) || blockState.is(Blocks.DEEPSLATE_EMERALD_ORE) || blockState.is(Blocks.DEEPSLATE_LAPIS_ORE) || blockState.is(Blocks.DEEPSLATE_REDSTONE_ORE))
+        else if (blockState.is(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE))
         {
             level.setBlockAndUpdate(hit.getBlockPos(), Blocks.DEEPSLATE.defaultBlockState());
         }
