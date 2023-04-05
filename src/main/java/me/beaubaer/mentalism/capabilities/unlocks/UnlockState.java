@@ -31,8 +31,9 @@ public class UnlockState
         unlockedSpells.add(Spell.TELEPORT);*/
 
         // add default unlocked spells
-        unlockedSpells.add(SpellRegistry.ROCK_CHIPPER.get());
-        unlockedSpells.add(SpellRegistry.SHOOT_ARROW.get());
+        unlock(SpellRegistry.ROCK_CHIPPER.get());
+        unlock(SpellRegistry.SHOOT_ARROW.get());
+        unlock(SpellRegistry.MINERAL_SIPHON.get());
     }
 
     // test if a spell is unlocked

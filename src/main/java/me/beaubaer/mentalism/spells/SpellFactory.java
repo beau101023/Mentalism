@@ -1,12 +1,15 @@
 package me.beaubaer.mentalism.spells;
 
-import me.beaubaer.mentalism.spells.strategies.activations.DestroyBlockAtCursor;
-import me.beaubaer.mentalism.spells.strategies.activations.ExplodeAtCursor;
-import me.beaubaer.mentalism.spells.strategies.activations.InterruptFocus;
-import me.beaubaer.mentalism.spells.strategies.activations.ShootArrow;
+import me.beaubaer.mentalism.spells.strategies.activations.*;
 import me.beaubaer.mentalism.spells.strategies.conditions.MouseOnPickableInMeleeRangeCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.PlayerFocusCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.SpellUnlockedCondition;
+import me.beaubaer.mentalism.spells.strategies.whilecastingactions.SiphonParticleEffect;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.Tags;
 
 public class SpellFactory
 {
@@ -27,7 +30,7 @@ public class SpellFactory
                 player -> new PlayerFocusCondition(0.9f, true).check(player)
         );
         shootArrow.addCastAction(
-                player -> new ShootArrow().activate(player)
+                player -> ShootArrow.activate(player)
         );
 
         return shootArrow;
@@ -38,7 +41,7 @@ public class SpellFactory
         Spell bidenBlast = new Spell(getNum(), "bidenblast", 1.0f);
 
         bidenBlast.addAvailabilityCondition(
-                player -> new MouseOnPickableInMeleeRangeCondition(null, null, true, true).check(player)
+                player -> MouseOnPickableInMeleeRangeCondition.check(player, res -> true)
         );
         bidenBlast.addCastCondition(
                 player -> new PlayerFocusCondition(0.9f, true).check(player)
@@ -46,8 +49,8 @@ public class SpellFactory
         bidenBlast.addCastAction(
                 player ->
                 {
-                    new ExplodeAtCursor().activate(player);
-                    new InterruptFocus().activate(player);
+                    ExplodeAtCursor.activate(player);
+                    InterruptFocus.activate(player);
                 }
         );
 
@@ -57,17 +60,49 @@ public class SpellFactory
     public static Spell rockChipper()
     {
         Spell rockChipper = new Spell(getNum(), "rockchipper", 1.0f);
-
-        rockChipper.addAvailabilityCondition(
-                player -> new MouseOnPickableInMeleeRangeCondition(null, null, false, true).check(player)
-        );
         rockChipper.addCastCondition(
-                player -> new PlayerFocusCondition(0.9f, true).check(player)
+                player ->
+                        new PlayerFocusCondition(0.9f, true).check(player) &&
+                                MouseOnPickableInMeleeRangeCondition.check(player,
+                                        res -> res.getType() == HitResult.Type.BLOCK)
         );
         rockChipper.addCastAction(
-                player -> new DestroyBlockAtCursor().activate(player)
+                player ->
+                {
+                    DestroyBlockAtCursor.activate(player);
+                    DistractFocus.activate(player);
+                }
         );
 
         return rockChipper;
+    }
+
+    // this spell is a mining spell.
+    // When cast, it will cause the targeted block to drop the ore it contains and convert the block into normal stone.
+    public static Spell mineralSiphon()
+    {
+        Spell mineralSiphon = new Spell(getNum(), "mineralsiphon", 1.0f);
+        mineralSiphon.addCastCondition(
+                player -> new PlayerFocusCondition(0.9f, true).check(player)
+        );
+        mineralSiphon.addCastCondition(
+                player ->
+                {
+                    HitResult res = Minecraft.getInstance().hitResult;
+
+                    if(res != null && res.getType() == HitResult.Type.BLOCK)
+                    {
+                        BlockState block = player.level.getBlockState(( (BlockHitResult) res ).getBlockPos());
+                        return block.is(Tags.Blocks.ORES);
+                    }
+                    return false;
+                }
+        );
+        mineralSiphon.addCastAction(
+                ExtractOreFromBlock::activate
+        );
+        mineralSiphon.addWhileCastingAction( (player, castProgress) -> SiphonParticleEffect.activate(player));
+
+        return mineralSiphon;
     }
 }

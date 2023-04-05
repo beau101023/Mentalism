@@ -38,6 +38,8 @@ public class SpellManager
         {
             castProgress = Math.min(castProgress + selectedSpell.getCastIncrement(), 1.0f);
 
+            selectedSpell.whileCasting(p, castProgress);
+
             if (castProgress == 1f)
             {
                 selectedSpell.activate(p);

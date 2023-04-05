@@ -4,11 +4,10 @@ import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.spells.strategies.conditions.SpellUnlockedCondition;
 import me.beaubaer.mentalism.util.MentalMath;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -58,9 +57,12 @@ public class Spell extends ForgeRegistryEntry<Spell>
             castAction = castAction.andThen(action);
     }
 
-    public void addCastCondition(Predicate<Player> condition)
+    public void addWhileCastingAction(BiConsumer<ServerPlayer, Float> action)
     {
-        castConditions.add(condition);
+        if(castInProgressAction == null)
+            castInProgressAction = action;
+        else
+            castInProgressAction = castInProgressAction.andThen(action);
     }
 
     public void addCastCondition(Predicate<ServerPlayer> condition)

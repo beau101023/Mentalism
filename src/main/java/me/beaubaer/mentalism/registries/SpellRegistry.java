@@ -18,6 +18,7 @@ public class SpellRegistry
     public static final RegistryObject<Spell> SHOOT_ARROW = registerSpell(SpellFactory.shootArrow());
     public static final RegistryObject<Spell> BIDEN_BLAST = registerSpell(SpellFactory.bidenBlast());
     public static final RegistryObject<Spell> ROCK_CHIPPER = registerSpell(SpellFactory.rockChipper());
+    public static final RegistryObject<Spell> MINERAL_SIPHON = registerSpell(SpellFactory.mineralSiphon());
 
     public static RegistryObject<Spell> registerSpell(Spell s)
     {
