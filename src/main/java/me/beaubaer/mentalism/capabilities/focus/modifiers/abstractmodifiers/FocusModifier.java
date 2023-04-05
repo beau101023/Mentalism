@@ -3,8 +3,9 @@ package me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers;
 import me.beaubaer.mentalism.capabilities.focus.Focus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class FocusModifier
+public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier>
 {
     public short priority;
 
