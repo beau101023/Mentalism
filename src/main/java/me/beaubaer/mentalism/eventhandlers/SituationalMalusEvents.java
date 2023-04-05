@@ -90,6 +90,10 @@ public class SituationalMalusEvents
         if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
             return;
 
+        // TODO: make bells give an antidistraction
+        if(e.getSound().getLocation().getPath().equals("bell.block.use") || e.getSound().getLocation().getPath().equals("bell.block.resonate"))
+            return;
+
         SoundInstance eSound = e.getSound();
 
         eSound.resolve(e.getEngine().soundManager);
