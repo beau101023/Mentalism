@@ -93,7 +93,7 @@ public class SpellFactory
                     if(res != null && res.getType() == HitResult.Type.BLOCK)
                     {
                         BlockState block = player.level.getBlockState(( (BlockHitResult) res ).getBlockPos());
-                        return block.is(Tags.Blocks.ORES);
+                        return block.is(Tags.Blocks.ORES_IN_GROUND_NETHERRACK) || block.is(Tags.Blocks.ORES_IN_GROUND_STONE) || block.is(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
                     }
                     return false;
                 }
