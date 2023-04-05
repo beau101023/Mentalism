@@ -21,8 +21,6 @@ public class ClientEvents
 {
     // keep track of previous states so we only update the server when something changes
     private static boolean previousFKeyState = false;
-    private static boolean previousCrouching = false;
-    private static boolean previousMoving = false;
 
     // tick counter
     private static int tickCounter = 0;

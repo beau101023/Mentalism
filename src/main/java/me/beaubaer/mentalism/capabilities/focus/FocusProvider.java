@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.capabilities.focus;
 
-import me.beaubaer.mentalism.capabilities.focus.Focus;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.FocusLevel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +31,8 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
+    {
         if(cap == FOCUS)
         {
             return optional.cast();

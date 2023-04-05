@@ -62,10 +62,10 @@ public class GraphicsUtil
         innerFill(innerPose, 0, -lineWidth/2, length, lineWidth/2, color);
     }
 
-    public static void debugString(PoseStack ps, String str, int offset, int width, int height)
+    public static void debugString(PoseStack ps, String str, int offset, int x, int y)
     {
         int textColor = FastColor.ARGB32.color(255, 255, 255, 255);
-        Gui.drawCenteredString(ps, Minecraft.getInstance().font, str, width/2, (height/2)+offset, textColor);
+        Gui.drawString(ps, Minecraft.getInstance().font, str, x, y+offset, textColor);
     }
 
     public static void renderSquareTextureOverlay(Matrix4f pMatrix, float radius, float centerX, float centerY, ResourceLocation pTextureLocation, float pAlpha)
