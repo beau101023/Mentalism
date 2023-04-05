@@ -64,10 +64,8 @@ public class RadialMenu implements IIngameOverlay
         // logic
         if(active)
         {
-            // FIXME Segment selection doesn't seem to work currently
             updateNumSegments();
             updateSelectedSegment(width, height);
-            syncSelectionToServer();
         }
 
         if(Mentalism.SHOW_FOCUS_INDICATOR)
@@ -258,6 +256,10 @@ public class RadialMenu implements IIngameOverlay
         else
         {
             mouse.grabMouse();
+
+            // if the menu is fully rendered and we close it, sync the selection to the server
+            if(renderFade > 0.9f)
+                syncSelectionToServer();
         }
 
         this.active = active;
