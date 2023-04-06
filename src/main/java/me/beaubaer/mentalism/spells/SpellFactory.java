@@ -1,15 +1,21 @@
 package me.beaubaer.mentalism.spells;
 
 import me.beaubaer.mentalism.spells.strategies.activations.*;
+import me.beaubaer.mentalism.spells.strategies.conditions.BlockInMeleeRangeCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.MouseOnPickableInMeleeRangeCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.PlayerFocusCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.SpellUnlockedCondition;
 import me.beaubaer.mentalism.spells.strategies.whilecastingactions.SiphonParticleEffect;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.Tags;
+
+import java.util.List;
 
 public class SpellFactory
 {
@@ -85,18 +91,11 @@ public class SpellFactory
         mineralSiphon.addCastCondition(
                 player -> new PlayerFocusCondition(0.9f, true).check(player)
         );
-        mineralSiphon.addCastCondition(
-                player ->
-                {
-                    HitResult res = Minecraft.getInstance().hitResult;
-
-                    if(res != null && res.getType() == HitResult.Type.BLOCK)
-                    {
-                        BlockState block = player.level.getBlockState(( (BlockHitResult) res ).getBlockPos());
-                        return block.is(Tags.Blocks.ORES_IN_GROUND_NETHERRACK) || block.is(Tags.Blocks.ORES_IN_GROUND_STONE) || block.is(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
-                    }
-                    return false;
-                }
+        mineralSiphon.addCastCondition(player ->
+                BlockInMeleeRangeCondition.test(player,
+                            List.of(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE,
+                                    Tags.Blocks.ORES_IN_GROUND_STONE,
+                                    Tags.Blocks.ORES_IN_GROUND_NETHERRACK))
         );
         mineralSiphon.addCastAction(
                 ExtractOreFromBlock::activate
