@@ -14,9 +14,10 @@ public class BlockInMeleeRangeCondition
 {
     public static boolean test(ServerPlayer player, List<TagKey<Block>> tags)
     {
-        HitResult res = Minecraft.getInstance().hitResult;
+        double reach = player.getReachDistance();
+        HitResult res = player.pick(reach, 0.0f, false);
 
-        if (res != null && res.getType() == HitResult.Type.BLOCK)
+        if (res.getType() == HitResult.Type.BLOCK)
         {
             BlockState block = player.level.getBlockState(((BlockHitResult) res).getBlockPos());
             return tags.stream().anyMatch(tag -> block.is(tag));
