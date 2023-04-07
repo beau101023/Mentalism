@@ -90,6 +90,12 @@ public class MentalismMessages
             .encoder(SoundDistractionC2SPacket::toBytes)
             .consumer(SoundDistractionC2SPacket::handle)
             .add();
+
+    net.messageBuilder(BellAntidistractionC2SPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(BellAntidistractionC2SPacket::new)
+            .encoder(BellAntidistractionC2SPacket::toBytes)
+            .consumer(BellAntidistractionC2SPacket::handle)
+            .add();
 }
 
     public static <MSG> void sendToServer(MSG message) {

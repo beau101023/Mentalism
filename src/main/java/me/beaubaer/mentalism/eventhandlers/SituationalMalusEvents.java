@@ -5,6 +5,7 @@ import me.beaubaer.mentalism.capabilities.focus.Focus;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
+import me.beaubaer.mentalism.networking.C2S.BellAntidistractionC2SPacket;
 import me.beaubaer.mentalism.networking.C2S.SetCanFocusC2SPacket;
 import me.beaubaer.mentalism.networking.C2S.SetFocusTimeC2SPacket;
 import me.beaubaer.mentalism.networking.C2S.SoundDistractionC2SPacket;
@@ -90,9 +91,8 @@ public class SituationalMalusEvents
         if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
             return;
 
-        // TODO: make bells give an antidistraction
         if(e.getSound().getLocation().getPath().equals("bell.block.use") || e.getSound().getLocation().getPath().equals("bell.block.resonate"))
-            return;
+            MentalismMessages.sendToServer(new BellAntidistractionC2SPacket());
 
         SoundInstance eSound = e.getSound();
 
