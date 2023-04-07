@@ -72,14 +72,14 @@ public class SituationalMalusEvents
 
     private static final Distraction RIGHT_CLICK_DISTRACTION = new Distraction(ModifierPriority.AFTER_LEVEL, 0.3f, 5f, "mentalism.distraction.rightclick");
 
-    // add a distraction when player right clicks a block
+    // add a distraction when player right-clicks a block
     @SubscribeEvent
     public static void playerRightClickedBlock(PlayerInteractEvent.RightClickBlock e)
     {
+        // FIXME: this accesses server code on the client
+        //  should network this instead
         e.getPlayer().getCapability(FocusProvider.FOCUS).ifPresent(f ->
-        {
-            f.putModifier(RIGHT_CLICK_DISTRACTION);
-        });
+                f.putModifier(RIGHT_CLICK_DISTRACTION));
     }
 
     @SubscribeEvent

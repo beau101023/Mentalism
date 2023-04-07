@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 public class FocusModifierRegistry
 {
     // TODO: implement at some point
-    // should allow for retrieving focus modifiers by a numerical ID for network transmission
-    // this will allow arbitrary focus modifiers to be applied to a focus from both the client and server
+    //  should allow for retrieving focus modifiers by a numerical ID for network transmission
+    //  this will allow arbitrary focus modifiers to be applied to a focus from both the client and server
+    //  However, for now we can just implement packets for each modifier we want to use instead.
 }

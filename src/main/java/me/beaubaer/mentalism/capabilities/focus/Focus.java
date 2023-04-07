@@ -44,6 +44,12 @@ public class Focus implements IFocus
     // calculated rate values from focusTime and focusDecayTime, to be used every tick
     protected float focusTickIncrement;
     protected float focusDecayIncrement;
+
+
+    /**
+     * FocusModifiers added via putModifier should be static singletons without overlapping IDs
+     * To add multiple modifiers with the same ID, add them to an AggregateFocusModifier
+     */
     private ModifierPriorityMap modifiers;
 
     public Focus()
@@ -156,16 +162,13 @@ public class Focus implements IFocus
         {
             Optional<DecayingFocusModifier> oldModifier = getModifier(fm, DecayingFocusModifier.class);
 
-            if(oldModifier.isPresent())
-            {
-                oldModifier.get().reset();
-                return;
-            }
+            oldModifier.ifPresent(DecayingFocusModifier::reset);
         }
-
-        fm.intitializeParent(this);
-
-        modifiers.put(fm);
+        else
+        {
+            fm.intitializeParent(this);
+            modifiers.put(fm);
+        }
     }
 
 
