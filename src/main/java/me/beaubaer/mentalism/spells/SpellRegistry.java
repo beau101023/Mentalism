@@ -1,8 +1,6 @@
-package me.beaubaer.mentalism.registries;
+package me.beaubaer.mentalism.spells;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.spells.Spell;
-import me.beaubaer.mentalism.spells.SpellFactory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -19,6 +17,7 @@ public class SpellRegistry
     public static final RegistryObject<Spell> BIDEN_BLAST = registerSpell(SpellFactory.bidenBlast());
     public static final RegistryObject<Spell> ROCK_CHIPPER = registerSpell(SpellFactory.rockChipper());
     public static final RegistryObject<Spell> MINERAL_SIPHON = registerSpell(SpellFactory.mineralSiphon());
+    public static final RegistryObject<Spell> AIR_WALK = registerSpell(SpellFactory.airWalk());
 
     public static RegistryObject<Spell> registerSpell(Spell s)
     {
