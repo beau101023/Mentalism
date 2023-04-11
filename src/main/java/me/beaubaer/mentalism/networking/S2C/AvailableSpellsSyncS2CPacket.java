@@ -1,13 +1,14 @@
 package me.beaubaer.mentalism.networking.S2C;
 
 import me.beaubaer.mentalism.clientdata.SpellCastData;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-public class AvailableSpellsSyncS2CPacket
+public class AvailableSpellsSyncS2CPacket implements IMessage
 {
     private final int messageLength;
     private final Integer[] spellNums;

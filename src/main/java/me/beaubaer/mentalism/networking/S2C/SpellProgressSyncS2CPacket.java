@@ -1,12 +1,13 @@
 package me.beaubaer.mentalism.networking.S2C;
 
 import me.beaubaer.mentalism.clientdata.SpellCastData;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SpellProgressSyncS2CPacket
+public class SpellProgressSyncS2CPacket implements IMessage
 {
     final float spellProgress;
 

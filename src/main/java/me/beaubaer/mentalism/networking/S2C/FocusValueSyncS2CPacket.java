@@ -1,12 +1,13 @@
 package me.beaubaer.mentalism.networking.S2C;
 
 import me.beaubaer.mentalism.clientdata.FocusData;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class FocusValueSyncS2CPacket
+public class FocusValueSyncS2CPacket implements IMessage
 {
     private final float focusVal;
 

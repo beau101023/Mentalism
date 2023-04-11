@@ -2,13 +2,13 @@ package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.AntiDistraction;
-import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class BellAntidistractionC2SPacket
+public class BellAntidistractionC2SPacket implements IMessage
 {
     public BellAntidistractionC2SPacket()
     {

@@ -3,6 +3,7 @@ package me.beaubaer.mentalism.networking.C2S;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -10,7 +11,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class SoundDistractionC2SPacket
+public class SoundDistractionC2SPacket implements IMessage
 {
     private final float volume;
 

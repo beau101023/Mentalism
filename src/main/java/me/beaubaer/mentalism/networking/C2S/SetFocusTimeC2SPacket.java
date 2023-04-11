@@ -1,13 +1,14 @@
 package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SetFocusTimeC2SPacket
+public class SetFocusTimeC2SPacket implements IMessage
 {
 
     private final float focusTime;

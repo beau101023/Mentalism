@@ -1,12 +1,13 @@
 package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
+import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SelectedSpellSyncC2SPacket
+public class SelectedSpellSyncC2SPacket implements IMessage
 {
     private final int spellNum;
 
