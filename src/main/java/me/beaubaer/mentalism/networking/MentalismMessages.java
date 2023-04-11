@@ -104,4 +104,17 @@ public class MentalismMessages
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
+
+    /*private static <MSG> void buildMessage(Class<MSG> clazz, int id, NetworkDirection direction)
+    {
+        // TODO: Look at this again later
+
+        // build message as in register()
+
+        INSTANCE.messageBuilder(clazz, id, direction)
+                .decoder(MSG::new)
+                .encoder(clazz::toBytes)
+                .consumer(clazz::handle)
+                .add();
+    }*/
 }
