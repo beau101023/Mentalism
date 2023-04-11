@@ -85,14 +85,14 @@ public class SituationalMalusEvents
     @SubscribeEvent
     public static void soundPlayed(PlaySoundEvent e)
     {
+        if(e.getSound().getLocation().getPath().equals("bell.block.use") || e.getSound().getLocation().getPath().equals("bell.block.resonate"))
+            MentalismMessages.sendToServer(new BellAntidistractionC2SPacket());
+
         if(!Mentalism.SOUND_DISTRACTIONS)
             return;
 
         if(e.getSound().getSource() == SoundSource.MUSIC || e.getSound().getSource() == SoundSource.MASTER)
             return;
-
-        if(e.getSound().getLocation().getPath().equals("bell.block.use") || e.getSound().getLocation().getPath().equals("bell.block.resonate"))
-            MentalismMessages.sendToServer(new BellAntidistractionC2SPacket());
 
         SoundInstance eSound = e.getSound();
 
