@@ -7,10 +7,10 @@ import com.mojang.math.Vector3f;
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.clientdata.FocusData;
 import me.beaubaer.mentalism.clientdata.SpellCastData;
-import me.beaubaer.mentalism.clientdata.UnlockData;
+import me.beaubaer.mentalism.clientdata.ProgressionData;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.C2S.SelectedSpellSyncC2SPacket;
-import me.beaubaer.mentalism.registries.SpellRegistry;
+import me.beaubaer.mentalism.spells.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
 import me.beaubaer.mentalism.util.MentalMath;
 import net.minecraft.client.Minecraft;
@@ -195,7 +195,7 @@ public class RadialMenu implements IIngameOverlay
 
     private void renderHyperfocusDarkness(Matrix4f pose, int width, int height)
     {
-        if(!UnlockData.canSeeWhenCasting)
+        if(!ProgressionData.canSeeWhenCasting)
         {
             // black background
             GraphicsUtil.renderTextureOverlay(pose, 0f, 0f, width, height, black, menuAlpha);

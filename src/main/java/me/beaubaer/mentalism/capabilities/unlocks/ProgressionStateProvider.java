@@ -11,27 +11,27 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class UnlockStateProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
+public class ProgressionStateProvider implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    public static final Capability<UnlockState> UNLOCK_STATE = CapabilityManager.get(new CapabilityToken<>() {});
-    private UnlockState unlockState = null;
-    private final LazyOptional<UnlockState> optional = LazyOptional.of(this::createUnlockManager);
+    public static final Capability<ProgressionState> PROGRESSION_STATE = CapabilityManager.get(new CapabilityToken<>() {});
+    private ProgressionState progressionState = null;
+    private final LazyOptional<ProgressionState> optional = LazyOptional.of(this::createProgressionState);
 
-    private UnlockState createUnlockManager()
+    private ProgressionState createProgressionState()
     {
-        if(this.unlockState == null)
+        if(this.progressionState == null)
         {
-            this.unlockState = new UnlockState();
+            this.progressionState = new ProgressionState();
         }
 
-        return this.unlockState;
+        return this.progressionState;
     }
 
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if(cap == UNLOCK_STATE)
+        if(cap == PROGRESSION_STATE)
         {
             return optional.cast();
         }
@@ -43,13 +43,13 @@ public class UnlockStateProvider implements ICapabilityProvider, INBTSerializabl
     public CompoundTag serializeNBT()
     {
         CompoundTag nbt = new CompoundTag();
-        createUnlockManager().saveNBTData(nbt);
+        createProgressionState().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt)
     {
-        createUnlockManager().loadNBTData(nbt);
+        createProgressionState().loadNBTData(nbt);
     }
 }
