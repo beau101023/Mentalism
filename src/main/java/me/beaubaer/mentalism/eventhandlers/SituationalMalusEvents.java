@@ -13,6 +13,7 @@ import me.beaubaer.mentalism.networking.MentalismMessages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -20,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Mentalism.MOD_ID)
+@Mod.EventBusSubscriber(modid = Mentalism.MOD_ID, value = Dist.CLIENT)
 public class SituationalMalusEvents
 {
     private static boolean previousMoving = false;
