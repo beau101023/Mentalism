@@ -2,15 +2,13 @@ package me.beaubaer.mentalism;
 
 import com.mojang.logging.LogUtils;
 import me.beaubaer.mentalism.networking.MentalismMessages;
-import me.beaubaer.mentalism.registries.SpellRegistry;
+import me.beaubaer.mentalism.spells.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryBuilder;
 import org.slf4j.Logger;
-
-import java.util.function.Supplier;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Mentalism.MOD_ID)

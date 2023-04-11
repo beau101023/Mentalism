@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.registries;
+package me.beaubaer.mentalism.capabilities.focus;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
