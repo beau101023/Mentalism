@@ -1,17 +1,13 @@
 package me.beaubaer.mentalism.spells;
 
+import me.beaubaer.mentalism.spells.strategies.activations.AddLingeringEffect;
 import me.beaubaer.mentalism.spells.strategies.activations.*;
 import me.beaubaer.mentalism.spells.strategies.conditions.BlockInMeleeRangeCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.MouseOnPickableInMeleeRangeCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.PlayerFocusCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.SpellUnlockedCondition;
+import me.beaubaer.mentalism.spells.strategies.lingeringeffects.AirWalk;
 import me.beaubaer.mentalism.spells.strategies.whilecastingactions.SiphonParticleEffect;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.Tags;
 
@@ -103,5 +99,21 @@ public class SpellFactory
         mineralSiphon.addWhileCastingAction( (player, castProgress) -> SiphonParticleEffect.activate(player));
 
         return mineralSiphon;
+    }
+
+    public static Spell airWalk()
+    {
+        Spell airWalk = new Spell(getNum(), "airwalk", 1.0f);
+        airWalk.addCastCondition(
+                player -> new PlayerFocusCondition(0.9f, true).check(player)
+        );
+        airWalk.addCastAction(
+                    player -> AddLingeringEffect.addAndInit(player, new AirWalk(7f))
+        );
+        airWalk.addCastAction(
+                ShootArrow::activate
+        );
+
+        return airWalk;
     }
 }
