@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier>
+public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier> implements Cloneable
 {
     public short priority;
 
@@ -57,4 +57,28 @@ public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier>
     public boolean shouldCopy() { return false; }
 
     public boolean shouldSave() { return false; }
+
+    public <T> T copy()
+    {
+        try
+        {
+            return (T) this.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Comparison performed by ID only rather than by reference
+    public boolean equals(Object other)
+    {
+        if (other instanceof FocusModifier)
+        {
+            FocusModifier otherModifier = (FocusModifier) other;
+            return this.ID.equals(otherModifier.ID) && this.parent.equals(otherModifier.parent);
+        }
+        return false;
+    }
 }

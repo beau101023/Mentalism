@@ -7,13 +7,13 @@ import net.minecraft.nbt.ListTag;
 
 public class FocusLevel extends FocusModifier
 {
-    public static final FocusLevel UNIVERSAL_FOCUSLEVEL = new FocusLevel(ModifierPriority.LEVEL, 1.0f, "mentalism.focuslevel.universal");
+    public static final FocusLevel DEFAULT_FOCUSLEVEL = new FocusLevel(ModifierPriority.LEVEL, 1.0f, "focuslevel.default");
 
     private float level;
 
-    public FocusLevel(CompoundTag tag)
+    public FocusLevel(CompoundTag nbt)
     {
-        super(tag);
+        super(nbt);
     }
 
     public FocusLevel(short priority, float level, String ID)

@@ -1,7 +1,5 @@
 package me.beaubaer.mentalism.capabilities.focus;
 
-import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.DecayingFocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.FocusModifier;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers.TickingFocusModifier;
@@ -45,9 +43,8 @@ public class Focus implements IFocus
     protected float focusTickIncrement;
     protected float focusDecayIncrement;
 
-
     /**
-     * FocusModifiers added via putModifier should be static singletons without overlapping IDs
+     * FocusModifiers added via putModifier should not have overlapping IDs
      * To add multiple modifiers with the same ID, add them to an AggregateFocusModifier
      */
     private ModifierPriorityMap modifiers;
@@ -167,7 +164,7 @@ public class Focus implements IFocus
         else
         {
             fm.intitializeParent(this);
-            modifiers.put(fm);
+            modifiers.add(fm);
         }
     }
 
@@ -179,7 +176,7 @@ public class Focus implements IFocus
 
         fm.intitializeParent(this);
 
-        modifiers.put(fm);
+        modifiers.add(fm);
     }
 
     public void removeModifier(FocusModifier fm)
@@ -224,7 +221,7 @@ public class Focus implements IFocus
         {
             if(fm.shouldCopy())
             {
-                this.modifiers.put(fm);
+                this.modifiers.add(fm);
             }
         }
     }
@@ -257,7 +254,7 @@ public class Focus implements IFocus
         for(Object tag : modifierList.toArray())
         {
             FocusModifier fm = loadModifier((CompoundTag) tag);
-            loadedModifiers.put(fm);
+            loadedModifiers.add(fm);
         }
 
         return loadedModifiers;
