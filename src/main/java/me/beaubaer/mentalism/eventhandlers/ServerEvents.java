@@ -3,15 +3,16 @@ package me.beaubaer.mentalism.eventhandlers;
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.IFocus;
+import me.beaubaer.mentalism.capabilities.lingeringeffects.LingeringEffectManager;
+import me.beaubaer.mentalism.capabilities.lingeringeffects.LingeringEffectManagerProvider;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManager;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManagerProvider;
-import me.beaubaer.mentalism.capabilities.unlocks.UnlockState;
-import me.beaubaer.mentalism.capabilities.unlocks.UnlockStateProvider;
-import me.beaubaer.mentalism.registries.SpellRegistry;
+import me.beaubaer.mentalism.capabilities.unlocks.ProgressionState;
+import me.beaubaer.mentalism.capabilities.unlocks.ProgressionStateProvider;
+import me.beaubaer.mentalism.spells.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -27,7 +28,7 @@ public class ServerEvents
     @SubscribeEvent
     public static void attachCapabilities(AttachCapabilitiesEvent<Entity> e)
     {
-        if(e.getObject() instanceof Player p)
+        if(e.getObject() instanceof ServerPlayer p)
         {
             if(!p.getCapability(FocusProvider.FOCUS).isPresent())
             {
@@ -35,7 +36,11 @@ public class ServerEvents
             }
             if(!p.getCapability(SpellManagerProvider.SPELL_MANAGER).isPresent())
             {
-                e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "spellmanager"), new SpellManagerProvider());
+                e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "spellmanager"), new SpellManagerProvider(p));
+            }
+            if(!p.getCapability(ProgressionStateProvider.PROGRESSION_STATE).isPresent())
+            {
+                e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "progressionstate"), new ProgressionStateProvider());
             }
             if(!p.getCapability(LingeringEffectManagerProvider.LINGERING_EFFECT_MANAGER).isPresent())
             {
@@ -56,8 +61,8 @@ public class ServerEvents
                             newStore.copyFrom(oldStore)));
 
             // unlock state should be copied to new player as well
-            e.getOriginal().getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(oldStore ->
-                    e.getPlayer().getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(newStore ->
+            e.getOriginal().getCapability(ProgressionStateProvider.PROGRESSION_STATE).ifPresent(oldStore ->
+                    e.getPlayer().getCapability(ProgressionStateProvider.PROGRESSION_STATE).ifPresent(newStore ->
                             newStore.copyFrom(oldStore)));
         }
     }
@@ -67,19 +72,13 @@ public class ServerEvents
     {
         event.register(IFocus.class);
         event.register(SpellManager.class);
-        event.register(UnlockState.class);
+        event.register(ProgressionState.class);
     }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent e)
     {
-        if(e.side != LogicalSide.SERVER)
-            return;
-
-        if(e.phase == TickEvent.Phase.START)
-            return;
-
-        if(e.type != TickEvent.Type.PLAYER)
+        if(e.side != LogicalSide.SERVER || e.phase != TickEvent.Phase.END || e.type != TickEvent.Type.PLAYER)
             return;
 
         ServerPlayer p = (ServerPlayer) e.player;
@@ -92,11 +91,11 @@ public class ServerEvents
             // if we go over 1.0 focus power, unlock biden blast spell
             if(f.getFocusPower() > 1.0f)
             {
-                p.getCapability(UnlockStateProvider.UNLOCK_STATE).ifPresent(um ->
+                p.getCapability(ProgressionStateProvider.PROGRESSION_STATE).ifPresent(ps ->
                 {
                     SpellRegistry.BIDEN_BLAST.ifPresent(s ->
                     {
-                        if(!um.isUnlocked(s)) um.unlock(s);
+                        if(!ps.isUnlocked(s)) ps.unlock(s);
                     });
                 });
             }
