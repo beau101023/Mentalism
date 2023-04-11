@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.capabilities.unlocks;
 
-import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.FocusLevel;
 import me.beaubaer.mentalism.spells.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
@@ -39,7 +38,9 @@ public class ProgressionState
 
     public FocusLevel getFocusLevel()
     {
-        return new FocusLevel(ModifierPriority.LEVEL, getProgressionValue("focusLevel"), FocusLevel.ID);
+        FocusLevel fl = FocusLevel.DEFAULT_FOCUSLEVEL.copy();
+        fl.setLevel(getProgressionValue("focusLevel"));
+        return fl;
     }
 
     private float getProgressionValue(String ID)
