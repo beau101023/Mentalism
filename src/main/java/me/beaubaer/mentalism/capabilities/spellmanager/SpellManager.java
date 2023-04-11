@@ -4,7 +4,7 @@ import me.beaubaer.mentalism.networking.S2C.AvailableSpellsSyncS2CPacket;
 import me.beaubaer.mentalism.networking.S2C.CanCastSpellsSyncS2CPacket;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.networking.S2C.SpellProgressSyncS2CPacket;
-import me.beaubaer.mentalism.registries.SpellRegistry;
+import me.beaubaer.mentalism.spells.SpellRegistry;
 import me.beaubaer.mentalism.spells.Spell;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -13,6 +13,7 @@ import java.util.List;
 
 public class SpellManager
 {
+
     public float castProgress = 0f;
     public final List<Integer> availableSpells;
 
@@ -20,19 +21,20 @@ public class SpellManager
 
     public boolean tryingToCast = false;
 
-    public SpellManager()
+    private final ServerPlayer p;
+    public SpellManager(ServerPlayer p)
     {
+        this.p = p;
         availableSpells = new ArrayList<>();
     }
 
     // called every player tick serverside
-    public void update(ServerPlayer p)
+    public void update()
     {
-        sync(p);
+        sync();
 
         if(selectedSpell == null)
             return;
-
 
         if(selectedSpell.canCast(p) && tryingToCast)
         {
@@ -66,14 +68,14 @@ public class SpellManager
         }
     }
 
-    public Integer[] getAvailableSpellNums(ServerPlayer p)
+    public Integer[] getAvailableSpellNums()
     {
-        updateAvailableSpells(p);
+        updateAvailableSpells();
 
         return availableSpells.toArray(new Integer[0]);
     }
 
-    public Integer[] getCanCastSpellNums(ServerPlayer p)
+    public Integer[] getCanCastSpellNums()
     {
         List<Integer> spellNums = new ArrayList<>();
 
@@ -88,7 +90,7 @@ public class SpellManager
         return spellNums.toArray(new Integer[0]);
     }
 
-    private void updateAvailableSpells(ServerPlayer p)
+    private void updateAvailableSpells()
     {
         availableSpells.clear();
 
@@ -101,10 +103,10 @@ public class SpellManager
         }
     }
 
-    public void sync(ServerPlayer p)
+    public void sync()
     {
         MentalismMessages.sendToPlayer(new SpellProgressSyncS2CPacket(castProgress), p);
-        MentalismMessages.sendToPlayer(new AvailableSpellsSyncS2CPacket(getAvailableSpellNums(p)), p);
-        MentalismMessages.sendToPlayer(new CanCastSpellsSyncS2CPacket(getCanCastSpellNums(p)), p);
+        MentalismMessages.sendToPlayer(new AvailableSpellsSyncS2CPacket(getAvailableSpellNums()), p);
+        MentalismMessages.sendToPlayer(new CanCastSpellsSyncS2CPacket(getCanCastSpellNums()), p);
     }
 }
