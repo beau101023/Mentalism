@@ -37,9 +37,10 @@ public class ServerEvents
             {
                 e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "spellmanager"), new SpellManagerProvider());
             }
-            if(!p.getCapability(UnlockStateProvider.UNLOCK_STATE).isPresent())
+            if(!p.getCapability(LingeringEffectManagerProvider.LINGERING_EFFECT_MANAGER).isPresent())
             {
-                e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "unlockmanager"), new UnlockStateProvider());
+                e.addCapability(new ResourceLocation(Mentalism.MOD_ID, "lingeringeffectmanager"), new LingeringEffectManagerProvider(p));
+
             }
         }
     }
@@ -101,7 +102,8 @@ public class ServerEvents
             }
         });
 
-        p.getCapability(SpellManagerProvider.SPELL_MANAGER).ifPresent(sm ->
-                sm.update(p));
+        p.getCapability(SpellManagerProvider.SPELL_MANAGER).ifPresent(SpellManager::update);
+
+        p.getCapability(LingeringEffectManagerProvider.LINGERING_EFFECT_MANAGER).ifPresent(LingeringEffectManager::update);
     }
 }

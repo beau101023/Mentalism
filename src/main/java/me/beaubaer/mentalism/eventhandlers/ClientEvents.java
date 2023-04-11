@@ -2,12 +2,15 @@ package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.clientdata.FocusData;
+import me.beaubaer.mentalism.clientdata.LingeringEffectData;
 import me.beaubaer.mentalism.events.IValueUpdatedListener;
 import me.beaubaer.mentalism.gui.RadialMenu;
 import me.beaubaer.mentalism.networking.C2S.*;
 import me.beaubaer.mentalism.networking.MentalismMessages;
 import me.beaubaer.mentalism.keymappings.KeyMappings;
+import me.beaubaer.mentalism.spells.strategies.lingeringeffects.AirWalk;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +33,6 @@ public class ClientEvents
     private static boolean doubleClicked = false;
 
 
-    public static List<IValueUpdatedListener> focusUpdatedListeners = new ArrayList<>();
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent e)
     {
@@ -44,12 +46,33 @@ public class ClientEvents
         if (mc.player == null)
             return;
 
+        handleLingeringEffects(mc.player);
+
+        checkFocusUpdated();
+
+        handleFKeyStates();
+    }
+
+    private static void handleLingeringEffects(LocalPlayer p)
+    {
+        if(LingeringEffectData.effectIsActive(AirWalk.name))
+        {
+            AirWalk.clientSideUpdate(p);
+        }
+    }
+
+    public static List<IValueUpdatedListener> focusUpdatedListeners = new ArrayList<>();
+    private static void checkFocusUpdated()
+    {
+        // FIXME: must be called every tick, name may be misleading
+        notifyFocusUpdatedListeners();
+    }
+
+    private static void notifyFocusUpdatedListeners() {
         for(IValueUpdatedListener listener : focusUpdatedListeners)
         {
             listener.onValueUpdated(FocusData.localFocus);
         }
-
-        handleFKeyStates();
     }
 
     private static void handleFKeyStates()
