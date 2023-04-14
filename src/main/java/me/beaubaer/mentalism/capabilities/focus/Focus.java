@@ -132,9 +132,9 @@ public class Focus implements IFocus
         return modifiers.collectType(modifierType);
     }
 
-    public <T extends FocusModifier> Optional<T> getModifier(FocusModifier modifier, Class<T> type)
+    public <T extends FocusModifier> Optional<T> getModifier(T modifier)
     {
-        List<FocusModifier> modifiers = getModifiers().stream().filter(fm -> fm.equals(modifier)).toList();
+        List<T> modifiers = (List<T>) getModifiers().stream().filter(fm -> fm.equals(modifier)).toList();
 
         if(modifiers.isEmpty())
             return Optional.empty();
@@ -144,7 +144,7 @@ public class Focus implements IFocus
             // normally, every modifier should have a unique ID
             throw new RuntimeException("More than one modifier with ID \"" + modifier.getID() + "\" found!");
         }
-        else return Optional.of(type.cast(modifiers.get(0)));
+        else return Optional.of(modifiers.get(0));
     }
 
     public ArrayList<FocusModifier> getModifiers()
