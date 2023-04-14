@@ -16,9 +16,9 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
 {
     public static final Capability<Focus> FOCUS = CapabilityManager.get(new CapabilityToken<>() {});
     private Focus focus = null;
-    private final LazyOptional<Focus> optional = LazyOptional.of(this::createFocus);
+    private final LazyOptional<Focus> optional = LazyOptional.of(this::getFocus);
 
-    private Focus createFocus()
+    private Focus getFocus()
     {
         if(this.focus == null)
         {
@@ -45,13 +45,13 @@ public class FocusProvider implements ICapabilityProvider, INBTSerializable<Comp
     public CompoundTag serializeNBT()
     {
         CompoundTag nbt = new CompoundTag();
-        createFocus().saveNBTData(nbt);
+        getFocus().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt)
     {
-        createFocus().loadNBTData(nbt);
+        getFocus().loadNBTData(nbt);
     }
 }
