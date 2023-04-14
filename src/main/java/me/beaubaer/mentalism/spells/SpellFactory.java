@@ -8,6 +8,7 @@ import me.beaubaer.mentalism.spells.strategies.conditions.PlayerFocusCondition;
 import me.beaubaer.mentalism.spells.strategies.conditions.SpellUnlockedCondition;
 import me.beaubaer.mentalism.spells.strategies.lingeringeffects.AirWalk;
 import me.beaubaer.mentalism.spells.strategies.whilecastingactions.SiphonParticleEffect;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.Tags;
 
@@ -111,7 +112,7 @@ public class SpellFactory
                     player -> AddLingeringEffect.addAndInit(player, new AirWalk(7f))
         );
         airWalk.addCastAction(
-                ShootArrow::activate
+                player -> PlayLocalSound.activate(SoundEvents.ENDERMAN_TELEPORT, 0.5f, 0.6f)
         );
 
         return airWalk;
