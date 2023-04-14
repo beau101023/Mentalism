@@ -122,6 +122,11 @@ public class Focus implements IFocus
         return Math.max(0f, focusPower);
     }
 
+    public boolean hasModifier(String id)
+    {
+        return modifiers.collectAll().stream().anyMatch(fm -> fm.getID().equals(id));
+    }
+
     public boolean hasModifier(FocusModifier modifier)
     {
         return modifiers.collectAll().contains(modifier);
