@@ -104,6 +104,9 @@ public class SpellFactory
 
     public static Spell airWalk()
     {
+        // TODO: make view bobbing work while airwalking
+        //  see https://discord.com/channels/166630061217153024/1096518539076194454
+        //  for more info
         Spell airWalk = new Spell(getNum(), "airwalk", 1.0f);
         airWalk.addCastCondition(
                 player -> new PlayerFocusCondition(0.9f, true).check(player)
