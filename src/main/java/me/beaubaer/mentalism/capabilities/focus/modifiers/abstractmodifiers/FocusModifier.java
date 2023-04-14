@@ -58,7 +58,7 @@ public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier> im
 
     public boolean shouldSave() { return false; }
 
-    public <T> T copy()
+    public <T extends FocusModifier> T copy()
     {
         try
         {
