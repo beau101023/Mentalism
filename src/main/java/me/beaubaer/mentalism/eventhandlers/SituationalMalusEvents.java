@@ -80,7 +80,7 @@ public class SituationalMalusEvents
         // FIXME: this accesses server code on the client
         //  should network this instead
         e.getPlayer().getCapability(FocusProvider.FOCUS).ifPresent(f ->
-                f.putModifier(RIGHT_CLICK_DISTRACTION));
+                f.addModifier(RIGHT_CLICK_DISTRACTION));
     }
 
     @SubscribeEvent

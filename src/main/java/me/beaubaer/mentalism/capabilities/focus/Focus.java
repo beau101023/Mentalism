@@ -152,31 +152,34 @@ public class Focus implements IFocus
         return modifiers.collectAll();
     }
 
-    // if the modifier is a decayingFocusModifier which already exists, reset the old modifier's amount and add the new one
-    public void putModifier(DecayingFocusModifier fm)
+    public void addModifier(DecayingFocusModifier fm)
     {
+        // if the modifier is a decayingFocusModifier which already exists, reset the old modifier's amount and add the new one
         if(this.hasModifier(fm))
         {
-            Optional<DecayingFocusModifier> oldModifier = getModifier(fm, DecayingFocusModifier.class);
+            Optional<DecayingFocusModifier> oldModifier = getModifier(fm);
 
             oldModifier.ifPresent(DecayingFocusModifier::reset);
         }
         else
         {
-            fm.intitializeParent(this);
-            modifiers.add(fm);
+            this.addModifier((FocusModifier) fm);
         }
     }
 
-
-    public void putModifier(FocusModifier fm)
+    /**
+     * Adds a duplicate of the given FocusModifier, which allows it to handle both
+     * static and dynamic modifiers without side effects.
+     * @param fm the FocusModifier to add
+     */
+    public void addModifier(FocusModifier fm)
     {
         if(this.hasModifier(fm))
             throw new RuntimeException("putModifier called with an ID that already exists: " + fm.getID());
 
-        fm.intitializeParent(this);
-
-        modifiers.add(fm);
+        FocusModifier toAdd = fm.copy();
+        toAdd.intitializeParent(this);
+        modifiers.add(toAdd);
     }
 
     public void removeModifier(FocusModifier fm)

@@ -28,7 +28,7 @@ public class BellAntidistractionC2SPacket implements IMessage
         {
             ctx.get().getSender().getCapability(FocusProvider.FOCUS).ifPresent(f ->
             {
-                f.putModifier(AntiDistraction.BELL_ANTIDISTRACTION);
+                f.addModifier(AntiDistraction.BELL_ANTIDISTRACTION);
             });
         });
         ctx.get().setPacketHandled(true);

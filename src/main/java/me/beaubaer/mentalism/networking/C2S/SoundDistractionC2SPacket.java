@@ -1,7 +1,6 @@
 package me.beaubaer.mentalism.networking.C2S;
 
 import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
-import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;
@@ -40,17 +39,18 @@ public class SoundDistractionC2SPacket implements IMessage
             p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
             {
                 // If the player already has a sound distraction, update it. Otherwise, create a new one.
-                Optional<Distraction> soundDistraction = f.getModifier(Distraction.SOUND_DISTRACTION, Distraction.class);
+                Optional<Distraction> soundDistraction = f.getModifier(Distraction.SOUND_DISTRACTION);
                 if(soundDistraction.isPresent())
                 {
                     Distraction d = soundDistraction.get();
+                    d.setMaxAmount(d.getMaxAmount() + volume);
                     d.reset();
-                    d.setAmount(d.getAmount() + volume);
                 }
                 else
                 {
-                    Distraction.SOUND_DISTRACTION.setAmount(volume);
-                    f.putModifier(Distraction.SOUND_DISTRACTION);
+                    Distraction customSoundDistraction = Distraction.SOUND_DISTRACTION.copy();
+                    customSoundDistraction.setAmount(volume);
+                    f.addModifier(customSoundDistraction);
                 }
             });
 

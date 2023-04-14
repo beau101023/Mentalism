@@ -10,7 +10,7 @@ public class DistractFocus
     {
         p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
         {
-                f.putModifier(d);
+                f.addModifier(d);
         });
     }
 
@@ -18,7 +18,7 @@ public class DistractFocus
     {
         p.getCapability(FocusProvider.FOCUS).ifPresent(f ->
         {
-            f.putModifier(Distraction.SPELL_DISTRACTION);
+            f.addModifier(Distraction.SPELL_DISTRACTION);
         });
     }
 
