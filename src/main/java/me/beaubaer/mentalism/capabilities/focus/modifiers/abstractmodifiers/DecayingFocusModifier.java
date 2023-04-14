@@ -2,7 +2,7 @@ package me.beaubaer.mentalism.capabilities.focus.modifiers.abstractmodifiers;
 
 public abstract class DecayingFocusModifier extends TickingFocusModifier
 {
-    protected final float maxAmount;
+    protected float maxAmount;
     protected float amount;
     protected float duration;
     protected float tickDecayRate;
@@ -20,7 +20,7 @@ public abstract class DecayingFocusModifier extends TickingFocusModifier
 
     private void updateTickDecayAmount()
     {
-        tickDecayRate = amount/(duration *20);
+        tickDecayRate = maxAmount/(duration *20);
     }
 
     /**
@@ -64,6 +64,17 @@ public abstract class DecayingFocusModifier extends TickingFocusModifier
     {
         this.amount = amount;
         updateTickDecayAmount();
+    }
+
+    public void setMaxAmount(float amount)
+    {
+        this.maxAmount = amount;
+        updateTickDecayAmount();
+    }
+
+    public float getMaxAmount()
+    {
+        return this.maxAmount;
     }
 
     public float getTickDecayRate() { return this.tickDecayRate; }
