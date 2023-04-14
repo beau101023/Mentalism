@@ -23,11 +23,7 @@ public class ModifierPriorityMap extends TreeMap<Short, ArrayList<FocusModifier>
 
     public ArrayList<FocusModifier> collectAll()
     {
-        ArrayList<FocusModifier> all = new ArrayList<>();
-
-        this.values().forEach(all::addAll);
-
-        return all;
+        return new ArrayList<>(this.values().stream().flatMap(ArrayList::stream).toList());
     }
 
     public ArrayList<FocusModifier> collectPriority(short toCollect)
@@ -37,6 +33,6 @@ public class ModifierPriorityMap extends TreeMap<Short, ArrayList<FocusModifier>
 
     public <T extends FocusModifier> ArrayList<T> collectType(Class<T> modifierType)
     {
-        return (ArrayList<T>) this.collectAll().stream().filter(modifierType::isInstance).map(modifierType::cast).toList();
+        return new ArrayList<>(this.collectAll().stream().filter(modifierType::isInstance).map(modifierType::cast).toList());
     }
 }
