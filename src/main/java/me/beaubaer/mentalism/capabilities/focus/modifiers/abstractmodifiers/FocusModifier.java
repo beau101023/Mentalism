@@ -74,9 +74,8 @@ public abstract class FocusModifier extends ForgeRegistryEntry<FocusModifier> im
     // Comparison performed by ID only rather than by reference
     public boolean equals(Object other)
     {
-        if (other instanceof FocusModifier)
+        if (other instanceof FocusModifier otherModifier)
         {
-            FocusModifier otherModifier = (FocusModifier) other;
             return this.ID.equals(otherModifier.ID) && this.parent.equals(otherModifier.parent);
         }
         return false;
