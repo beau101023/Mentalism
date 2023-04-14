@@ -46,6 +46,7 @@ public class AirWalk implements ILingeringEffect
         }
 
         p.setDeltaMovement(p.getDeltaMovement().x, 0, p.getDeltaMovement().z);
+        p.setOnGround(true);
     }
 
     @Override
