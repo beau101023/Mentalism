@@ -115,7 +115,7 @@ public class SpellFactory
                     player -> AddLingeringEffect.addAndInit(player, new AirWalk(7f))
         );
         airWalk.addCastAction(
-                player -> PlayLocalSound.activate(SoundEvents.ENDERMAN_TELEPORT, 0.5f, 0.6f)
+                player -> PlaySourcelessSound.activate(SoundEvents.ENDERMAN_TELEPORT, 0.5f, 0.6f, player)
         );
 
         return airWalk;

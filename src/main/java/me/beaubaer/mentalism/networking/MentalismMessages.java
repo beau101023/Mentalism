@@ -47,6 +47,7 @@ public class MentalismMessages
         buildMessage(BellAntidistractionC2SPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT);
         buildMessage(AddLingeringEffectS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT);
         buildMessage(RemoveLingeringEffectS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT);
+        buildMessage(PlaySourcelessSoundS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT);
     }
 
     public static <MSG> void sendToServer(MSG message)

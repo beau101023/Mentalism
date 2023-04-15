@@ -1,4 +1,4 @@
-package me.beaubaer.mentalism.spells.strategies.activations;
+package me.beaubaer.mentalism.networking.clienthandlers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -7,9 +7,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PlayLocalSound
+public class HandlePlaySourcelessSound
 {
-    public static void activate(SoundEvent sound, float volume, float pitch)
+    public static void handle(SoundEvent sound, float volume, float pitch)
     {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forLocalAmbience(sound, volume, pitch));
     }
