@@ -27,14 +27,12 @@ public class MentalismMessages
 
     public static void register()
     {
-        SimpleChannel net = NetworkRegistry.ChannelBuilder
+        INSTANCE = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(Mentalism.MOD_ID, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)
                 .simpleChannel();
-
-        INSTANCE = net;
 
         buildMessage(FocusKeySyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER);
         buildMessage(SetFocusTimeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER);
