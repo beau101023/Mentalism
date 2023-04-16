@@ -1,7 +1,6 @@
 package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
-import me.beaubaer.mentalism.capabilities.focus.IFocus;
 import me.beaubaer.mentalism.capabilities.lingeringeffects.LingeringEffectManager;
 import me.beaubaer.mentalism.capabilities.lingeringeffects.LingeringEffectManagerProvider;
 import me.beaubaer.mentalism.capabilities.spellmanager.SpellManager;

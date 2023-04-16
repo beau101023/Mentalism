@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Focus implements IFocus
+public class Focus
 {
     protected float focus = 0.0f;
 
