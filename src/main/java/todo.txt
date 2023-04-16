@@ -1,5 +1,15 @@
 Utility emphasis
 
+TODO: Rewrite the spell system to dispatch all effects from the client instead of having the client
+ trigger a dispatch from the server.
+ This means
+ 1. Focus will be handled on the client
+ 2. The spell manager will be on the client
+ 3. The Progression State will still be on the server for persistence
+ 4. Lingering effects will be handled on the client, and the lingering effect manager will be client-side
+ 5. When a spell is cast, the spell's ID number will be sent to the server.
+     The server will then perform all server-side logic.
+ The goal of this is to avoid server-client communication as much as possible to reduce complexity
 
 
 - Implement distraction resistances
