@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.spells.strategies.activations;
 
-import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import net.minecraft.world.entity.player.Player;
 

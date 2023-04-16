@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.networking.C2S;
 
-import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.networking.IMessage;
 import net.minecraft.network.FriendlyByteBuf;

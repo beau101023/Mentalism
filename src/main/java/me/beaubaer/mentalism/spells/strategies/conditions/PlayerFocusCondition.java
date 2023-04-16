@@ -1,6 +1,5 @@
 package me.beaubaer.mentalism.spells.strategies.conditions;
 
-import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import net.minecraft.world.entity.player.Player;
 
 public class PlayerFocusCondition

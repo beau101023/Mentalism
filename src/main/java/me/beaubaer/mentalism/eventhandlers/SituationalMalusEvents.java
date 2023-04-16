@@ -2,7 +2,6 @@ package me.beaubaer.mentalism.eventhandlers;
 
 import me.beaubaer.mentalism.Mentalism;
 import me.beaubaer.mentalism.capabilities.focus.Focus;
-import me.beaubaer.mentalism.capabilities.focus.FocusProvider;
 import me.beaubaer.mentalism.capabilities.focus.ModifierPriority;
 import me.beaubaer.mentalism.capabilities.focus.modifiers.Distraction;
 import me.beaubaer.mentalism.networking.C2S.BellAntidistractionC2SPacket;
